@@ -1,4 +1,5 @@
 # softtek_angular_pro_app
+
 Demo app para el curso avanzado de Angular
 
 > [Laboratorio de ejemplo](https://github.com/TrainingITCourses/softtek_angular_pro_app) del curso de [Angular Moderno Pro para Softtek](https://cursos.trainingit.es/course/view.php?id=1570) impartido por [Alberto Basalo](https://albertobasalo.dev) con TrainingIT.
@@ -30,6 +31,17 @@ npm run api:seed
 npm start
 ```
 
+### 1.1. Instalación de API para pruebas
+
+Servidor de pruebas para la aplicación. Está desarrollado con [bun](https://bun.sh/), pero se puede ejecutar en cualquier servidor de Node.js.
+
+```bash
+git clone https://github.com/AlbertoBasalo/api_bun.git
+cd api_bun
+npm run bun:i
+npm start
+```
+
 > [!NOTE]
 > La aplicación de ejemplo estará en la carpeta [ActivityBookings](./ActivityBookings)
 
@@ -44,7 +56,13 @@ ng new ActivityBookings --inline-style --inline-template --prefix=lab --skip-tes
 npx ng new ActivityBookings -s -t -p=lab -S --style=css
 ```
 
----
+### 3 . Recomendaciones
+
+- Instalar [Angular essentials](https://marketplace.visualstudio.com/items?itemName=johnpapa.angular-essentials) en Visual Studio Code.
+
+- Configurar Prettier
+
+- Configurar ESLint
 
 <footer>
   <h3>🧑🏼‍💻 By <a href="https://albertobasalo.dev" target="blank">Alberto Basalo</a> </h3>
