@@ -1,6 +1,6 @@
-# softtek_angular_pro_app
+# Softtek Angular Pro App
 
-Demo app para el curso avanzado de Angular
+Aplicación de ejemplo para el curso avanzado de Angular Moderno
 
 > [Laboratorio de ejemplo](https://github.com/TrainingITCourses/softtek_angular_pro_app) del curso de [Angular Moderno Pro para Softtek](https://cursos.trainingit.es/course/view.php?id=1570) impartido por [Alberto Basalo](https://albertobasalo.dev) con TrainingIT.
 

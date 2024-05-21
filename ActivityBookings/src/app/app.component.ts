@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HeaderWidget } from './core/header.widget';
 
 @Component({
   selector: 'lab-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [HeaderWidget, RouterOutlet],
   template: `
-    <h1>Welcome to {{title}}!</h1>
-
+    <lab-header />
     <router-outlet />
   `,
   styles: [],
