@@ -1,1 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  padding: 1rem;
+}
+span {
+  margin-right: 0.5rem;
+}
+.right {
+  text-align: right;
+  padding-right: 1rem;
+}
