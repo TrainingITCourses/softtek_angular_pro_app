@@ -51,9 +51,9 @@ Puedes, repplicar la aplicación usando los isguientes comandos y agregando el c
 
 ```bash
 # Generate new Angular project
-ng new ActivityBookings --inline-style --inline-template --prefix=lab --skip-tests --style=css
+ng new ActivityBookings --inline-style --inline-template --prefix=lab --skip-tests --ssr --style=css
 # Or run with npx and options with aliases (- instead of --)
-npx ng new ActivityBookings -s -t -p=lab -S --style=css
+npx ng new ActivityBookings -s -t -p=lab -S --ssr --style=css
 ```
 
 ### 3 . Recomendaciones
