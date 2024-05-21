@@ -20,23 +20,33 @@ node -v
 npm -v
 # Install Angular CLI
 npm i -g @angular/cli@latest
-# Clone lab from github
-git clone https://github.com/TrainingITCourses/softtek_angular_pro_app.git
-# Install and run
-cd softtek_angular_pro_app/ActivityBookings
-npm i
-# Run Angular Server App
-npm start
 ```
 
 ### 1.1. Instalación de API para pruebas
 
-Servidor de pruebas para la aplicación. Está desarrollado con [bun](https://bun.sh/), pero se puede ejecutar en cualquier servidor de Node.js.
+En otra carpeta aparte, se debe instalar un servidor de datos de pruebas para la aplicación.
+
+[Api-Bun](https://github.com/AlbertoBasalo/api_bun) está desarrollado con [bun](https://bun.sh/), pero se puede ejecutar con _Node.js_.
 
 ```bash
+# Clone bun api from github
 git clone https://github.com/AlbertoBasalo/api_bun.git
 cd api_bun
+# Install the bun dependencies
 npm run bun:i
+# Run the bun server
+npm start
+```
+
+### 1.1. Clonado y ejecución de aplicación de ejemplo
+
+```bash
+# Clone demo lab from github
+git clone https://github.com/TrainingITCourses/softtek_angular_pro_app.git
+cd softtek_angular_pro_app/ActivityBookings
+# Install
+npm i
+# Run Angular Server App
 npm start
 ```
 
@@ -45,13 +55,12 @@ npm start
 
 ## 2. Replicar aplicación de ejemplo
 
-Puedes, repplicar la aplicación usando los isguientes comandos y agregando el contenido desde esta.
+Puedes, replicar la aplicación usando los siguientes comandos y agregando el contenido desde este repo.
 
 ```bash
 # Generate new Angular project
 ng new ActivityBookings --inline-style --inline-template --prefix=lab --skip-tests --ssr --style=css
-# Or run with npx and options with aliases (- instead of --)
-npx ng new ActivityBookings -s -t -p=lab -S --ssr --style=css
+
 ```
 
 ### 3 . Recomendaciones
