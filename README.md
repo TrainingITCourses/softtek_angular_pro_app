@@ -25,8 +25,6 @@ git clone https://github.com/TrainingITCourses/softtek_angular_pro_app.git
 # Install and run
 cd softtek_angular_pro_app/ActivityBookings
 npm i
-# Run a fake API server
-npm run api:seed
 # Run Angular Server App
 npm start
 ```
