@@ -15,7 +15,7 @@ export type ActivityStatus =
  * @description This is a DTO for the activity entity
  */
 export type Activity = {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   price: number;
@@ -25,12 +25,12 @@ export type Activity = {
   minParticipants: number;
   maxParticipants: number;
   status: ActivityStatus;
-  userId: number;
+  userId: string;
 };
 
 /** Null object pattern for the Activity type */
 export const NULL_ACTIVITY: Activity = {
-  id: 0,
+  id: '',
   name: '',
   slug: '',
   price: 0,
@@ -40,5 +40,5 @@ export const NULL_ACTIVITY: Activity = {
   minParticipants: 0,
   maxParticipants: 0,
   status: 'draft',
-  userId: 0,
+  userId: '',
 };

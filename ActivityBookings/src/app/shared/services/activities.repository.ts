@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Activity } from '@domain/activity.type';
+import { Activity, NULL_ACTIVITY } from '@domain/activity.type';
 import { environment } from '@env/environment';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 /**
  * Repository service for the activities.
@@ -34,5 +34,17 @@ export class ActivitiesRepository {
     // const url = `${this.#apiUrl}/?status=404`;
     // const url = `${this.#apiUrl}/?delay=5000`;
     return this.#http.get<Activity[]>(url);
+  }
+
+  /**
+   * Get an activity by its slug from the API
+   * @param slug The slug of the activity to get
+   * @returns An observable with the activity
+   */
+  getBySlug$(slug: string): Observable<Activity> {
+    const url = `${this.#apiUrl}/?key=slug&value=${slug}`;
+    return this.#http
+      .get<Activity[]>(url)
+      .pipe(map((activities) => activities[0] || NULL_ACTIVITY));
   }
 }

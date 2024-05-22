@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, InputSignal, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Activity } from '@domain/activity.type';
 import { CurrencyComponent } from '@ui/currency.component';
 import { DateComponent } from '@ui/date.component';
@@ -14,12 +15,12 @@ import { LocationComponent } from '@ui/location.component';
   selector: 'lab-activity-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CurrencyComponent, DateComponent, LocationComponent],
+  imports: [CurrencyComponent, DateComponent, LocationComponent, RouterLink],
   template: `
     @for(activity of activities(); track activity.id ){
     <div>
       <span>
-        <a href="">{{ activity.name }}</a>
+        <a [routerLink]="['/', 'bookings', activity.slug]">{{ activity.name }}</a>
       </span>
       <lab-location [value]="activity.location" />
       <lab-currency [value]="activity.price" />

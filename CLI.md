@@ -52,3 +52,13 @@ ng g c shared/ui/location
    - Signal stores to communicate components
    - RxJs Interop to manage async data
    - Simple Redux with Signals and RxJs
+
+```bash
+# Bookings:slug page
+ng g c routes/bookings/booking --type=page
+ng g s routes/bookings/booking
+ng g r routes/bookings/activity
+ng g c routes/bookings/booking-details
+ng g i shared/domain/booking --type=type
+ng g class shared/services/bookings --type=repository
+```
