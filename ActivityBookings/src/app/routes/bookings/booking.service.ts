@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { getNextActivityStatus } from '@domain/activity.logic';
-import { Activity, ActivityStatus } from '@domain/activity.type';
+import { ActivityStatus } from '@domain/activity.type';
 import { Booking } from '@domain/booking.type';
 import { ActivitiesRepository } from '@services/activities.repository';
 import { BookingsRepository } from '@services/bookings.repository';
@@ -38,10 +38,10 @@ export class BookingService {
     });
   }
 
-  dispatchPutActivity(activity: Activity): void {
-    // ! beware of sending the bookings array, still is an ActivityWithBookings
+  dispatchPutActivity(activity: ActivityWithBookings): void {
+    const { bookings, ...activityWithoutBookings } = activity;
     this.#activitiesRepository
-      .putActivity$(activity)
+      .putActivity$(activityWithoutBookings)
       .subscribe(() => this.#bookingStore.changeActivityStatus(activity.status));
   }
 

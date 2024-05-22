@@ -32,7 +32,7 @@ export class BookingStore {
   changeActivityStatus(newStatus: ActivityStatus): void {
     this.#activity.update((activity) => {
       activity.status = newStatus;
-      return activity;
+      return { ...activity };
     });
   }
 }
