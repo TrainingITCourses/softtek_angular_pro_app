@@ -2,6 +2,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { environment } from '@env/environment';
 
+/**
+ * Header widget with the main navigation.
+ */
 @Component({
   selector: 'lab-header',
   standalone: true,
@@ -28,6 +31,8 @@ import { environment } from '@env/environment';
     }`,
 })
 export class HeaderWidget {
+  // * Properties division
+
   /** Application title */
   title: string = environment.appName;
 }

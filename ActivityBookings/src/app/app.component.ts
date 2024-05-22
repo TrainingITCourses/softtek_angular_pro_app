@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderWidget } from './core/header.widget';
 
+/**
+ * _Root_ component of the application with the main layout.
+ * - Contains the header, the main content and the footer.
+ * - Uses the `router-outlet` to display the different pages.
+ */
 @Component({
   selector: 'lab-root',
   standalone: true,
@@ -12,6 +17,4 @@ import { HeaderWidget } from './core/header.widget';
   `,
   styles: [],
 })
-export class AppComponent {
-  title = 'ActivityBookings';
-}
+export class AppComponent {}

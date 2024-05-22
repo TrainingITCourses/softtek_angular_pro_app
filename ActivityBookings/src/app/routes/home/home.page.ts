@@ -1,16 +1,22 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, inject } from '@angular/core';
+import { Activity } from '@domain/activity.type';
 import { ActivityListComponent } from './activity-list.component';
 import { HomeService } from './home.service';
 
+/**
+ * Routed component for the Home page.
+ * - Imports the `ActivityListComponent` as a presentation component.
+ * - Provides the `HomeService` as a facade to get the data access.
+ */
 @Component({
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ActivityListComponent],
+  providers: [HomeService],
   template: `
     <h1>Activities</h1>
     <lab-activity-list [activities]="activities()" />
   `,
-  styles: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class HomePage {
   // * Injected services division
@@ -20,5 +26,5 @@ export default class HomePage {
   // * Public signal division
 
   /** List of activities */
-  activities = this.#service.activities;
+  activities: Signal<Activity[]> = this.#service.activities;
 }

@@ -39,9 +39,11 @@ ng g i shared/domain/activity --type=type
 ng g class shared/services/activities --type=repository
 # - rename to ActivitiesRepository and add injectable providedIn: 'root'
 
-# ui atoms for date, currency, etc.
+# ui atoms for date, currency, location etc.
 ng g c shared/ui/date
 ng g c shared/ui/currency
+ng g c shared/ui/location
+
 ```
 
 ## Sesión 2

@@ -3,9 +3,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { Activity } from '@domain/activity.type';
 import { ActivitiesRepository } from '@services/activities.repository';
 
-@Injectable({
-  providedIn: 'root',
-})
+/**
+ * Facade service for the Home page
+ * - NOT Provided in the root injector.
+ * - Uses the `ActivitiesRepository` to get the activities data.
+ */
+@Injectable()
 export class HomeService {
   // * Injected services division
 

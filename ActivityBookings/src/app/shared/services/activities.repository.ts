@@ -4,6 +4,11 @@ import { Activity } from '@domain/activity.type';
 import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 
+/**
+ * Repository service for the activities.
+ * - Provides the activities data from the API.
+ * - Provided in the root injector.
+ */
 @Injectable({
   providedIn: 'root',
 })
