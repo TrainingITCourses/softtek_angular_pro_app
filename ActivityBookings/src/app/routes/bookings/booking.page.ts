@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Signal,
+  WritableSignal,
   computed,
   inject,
   signal,
@@ -31,10 +32,11 @@ export default class BookingPage {
   /** The pre resolved activity based on the slug  */
   #resolvedActivity: ActivityWithBookings = this.#route.snapshot.data['activity'];
   /** The Activity signal */
-  activity: Signal<ActivityWithBookings> = signal(this.#resolvedActivity);
+  activity: WritableSignal<ActivityWithBookings> = signal(this.#resolvedActivity);
 
   bookedPlaces: Signal<number> = computed(() => {
-    const bookings = this.#resolvedActivity.bookings;
+    const activity = this.activity();
+    const bookings = activity.bookings;
     return bookings.reduce((acc, booking) => acc + booking.participants, 0);
   });
 
@@ -44,6 +46,11 @@ export default class BookingPage {
   onBookNow() {
     this.#service.postBooking$(this.#resolvedActivity.id, 1).subscribe((booking) => {
       console.log('Booking created, need to reload', booking);
+      this.#service
+        .getActivityWithBookingsBySlug(this.#resolvedActivity.slug)
+        .subscribe((activity) => {
+          this.activity.set(activity);
+        });
     });
   }
 }
