@@ -1,5 +1,16 @@
 # CLI commands
 
+## Sesión 1
+
+1. Modern Angular Applications
+   - Standalone, Single-file, Signal components
+   - Lazy loading components and Signal parameters
+   - Container/presenter with Signals
+2. Application architecture
+   - Organization without modules
+   - Core services and providers
+   - Domain and clean architecture
+
 ```bash
 # Generate new Angular project
 ng new ActivityBookings --inline-style --inline-template --prefix=lab --skip-tests --ssr --style=css
@@ -32,3 +43,10 @@ ng g class shared/services/activities --type=repository
 ng g c shared/ui/date
 ng g c shared/ui/currency
 ```
+
+## Sesión 2
+
+3. State management
+   - Signal stores to communicate components
+   - RxJs Interop to manage async data
+   - Simple Redux with Signals and RxJs
