@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { activityResolver } from './routes/bookings/activity.resolver';
 
 /**
  * Routes configuration for the application.
@@ -14,6 +13,7 @@ export const routes: Routes = [
   {
     path: 'bookings/:slug',
     loadComponent: () => import('./routes/bookings/booking.page'),
-    resolve: { activity: activityResolver },
   },
 ];
+
+// resolve: { activity: activityResolver },

@@ -1,20 +1,15 @@
 import { JsonPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Signal,
-  WritableSignal,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ActivityWithBookings, BookingService } from './booking.service';
+import { ActivityWithBookings } from './activity-with-bookings.type';
+import { BookingService } from './booking.service';
+import { BookingStore } from './booking.store';
 
 @Component({
   standalone: true,
-  imports: [JsonPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [JsonPipe],
+  providers: [BookingService, BookingStore],
   template: `
     <pre>{{ activity() | json }}</pre>
     <p>Booked places: {{ bookedPlaces() }}</p>
@@ -24,33 +19,23 @@ import { ActivityWithBookings, BookingService } from './booking.service';
 export default class BookingPage {
   // * Injected services division
 
-  /** The activated route with current activity */
   #route = inject(ActivatedRoute);
-
   #service = inject(BookingService);
+  #bookingStore: BookingStore = inject(BookingStore);
 
-  /** The pre resolved activity based on the slug  */
-  #resolvedActivity: ActivityWithBookings = this.#route.snapshot.data['activity'];
-  /** The Activity signal */
-  activity: WritableSignal<ActivityWithBookings> = signal(this.#resolvedActivity);
+  // * Signals division
 
-  bookedPlaces: Signal<number> = computed(() => {
-    const activity = this.activity();
-    const bookings = activity.bookings;
-    return bookings.reduce((acc, booking) => acc + booking.participants, 0);
-  });
+  activity: Signal<ActivityWithBookings> = this.#bookingStore.activity;
+  bookedPlaces: Signal<number> = this.#bookingStore.bookedPlaces;
 
-  /**
-   * Book now button click handler
-   */
+  constructor() {
+    const slug: string = this.#route.snapshot.paramMap.get('slug') || '';
+    this.#service.dispatchGetActivityWithBookingsBySlug(slug);
+  }
+
+  // * Event handlers division
+
   onBookNow() {
-    this.#service.postBooking$(this.#resolvedActivity.id, 1).subscribe((booking) => {
-      console.log('Booking created, need to reload', booking);
-      this.#service
-        .getActivityWithBookingsBySlug(this.#resolvedActivity.slug)
-        .subscribe((activity) => {
-          this.activity.set(activity);
-        });
-    });
+    this.#service.dispatchPostBooking(this.activity().id, 1);
   }
 }

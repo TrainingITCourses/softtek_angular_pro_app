@@ -47,4 +47,9 @@ export class ActivitiesRepository {
       .get<Activity[]>(url)
       .pipe(map((activities) => activities[0] || NULL_ACTIVITY));
   }
+
+  putActivity$(activity: Activity): Observable<Activity> {
+    const url = `${this.#apiUrl}/${activity.id}`;
+    return this.#http.put<Activity>(url, activity);
+  }
 }
