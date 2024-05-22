@@ -11,12 +11,12 @@ export class ActivitiesRepository {
   // * Private properties division
 
   /** The API URL for the activities  */
-  #apiUrl = `${environment.apiUrl}/activities`;
+  #apiUrl: string = `${environment.apiUrl}/activities`;
 
   // * Injected services division
 
   /** The HTTP client to make requests to the API */
-  #http = inject(HttpClient);
+  #http: HttpClient = inject(HttpClient);
 
   // * Public methods division
 
