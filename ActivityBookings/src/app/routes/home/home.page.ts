@@ -31,6 +31,6 @@ export default class HomePage {
   activities: Signal<Activity[]> = this.#service.activities;
 
   onSearch(value: string) {
-    console.log('Searching for:', value);
+    this.#service.dispatchSearch(value);
   }
 }

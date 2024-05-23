@@ -35,4 +35,9 @@ export class ActivitiesRepository {
     // const url = `${this.#apiUrl}/?delay=5000`;
     return this.#http.get<Activity[]>(url);
   }
+
+  getByQuery$(query: string): Observable<Activity[]> {
+    const url = `${this.#apiUrl}/?q=${query}`;
+    return this.#http.get<Activity[]>(url);
+  }
 }
