@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, InputSignal, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Activity } from '@domain/activity.type';
+import { ActivityStatusComponent } from '@ui/activity-status.component';
 import { CurrencyComponent } from '@ui/currency.component';
 import { DateComponent } from '@ui/date.component';
 import { LocationComponent } from '@ui/location.component';
@@ -15,7 +16,13 @@ import { LocationComponent } from '@ui/location.component';
   selector: 'lab-activity-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CurrencyComponent, DateComponent, LocationComponent, RouterLink],
+  imports: [
+    ActivityStatusComponent,
+    CurrencyComponent,
+    DateComponent,
+    LocationComponent,
+    RouterLink,
+  ],
   template: `
     @for(activity of activities(); track activity.id ){
     <div>
@@ -25,6 +32,7 @@ import { LocationComponent } from '@ui/location.component';
       <lab-location [value]="activity.location" />
       <lab-currency [value]="activity.price" />
       <lab-date [value]="activity.date" />
+      <lab-activity-status [value]="activity.status" />
     </div>
     } @empty {
     <input disabled value="No activities found" />

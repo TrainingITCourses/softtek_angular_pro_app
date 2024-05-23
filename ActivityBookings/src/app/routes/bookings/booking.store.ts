@@ -27,14 +27,18 @@ export class BookingStore {
 
   addNewBooking(booking: Booking): void {
     this.#bookings.update((bookings) => [...bookings, booking]);
+    this.#checkActivityStatus();
+  }
+
+  #checkActivityStatus() {
     const bookedPlaces = getBookedPlaces(this.#bookings());
     const newStatus = getNextActivityStatus(this.#activity(), bookedPlaces);
     if (newStatus.toLocaleLowerCase() !== this.#activity().status.toLocaleLowerCase()) {
-      this.changeActivityStatus(newStatus);
+      this.#changeActivityStatus(newStatus);
     }
   }
 
-  changeActivityStatus(newStatus: ActivityStatus): void {
+  #changeActivityStatus(newStatus: ActivityStatus): void {
     this.#activity.update((activity) => ({ ...activity, status: newStatus }));
     this.#activityStatusUpdated.set(true);
   }

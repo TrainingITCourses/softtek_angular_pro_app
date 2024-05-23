@@ -1,21 +1,25 @@
 import { JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Activity } from '@domain/activity.type';
-import { Booking } from '@domain/booking.type';
+import { ActivityDetailsComponent } from './activity-details.component';
 import { BookingService } from './booking.service';
 import { BookingStore } from './booking.store';
+import { NewBookingComponent } from './new-booking.component';
 
 @Component({
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [JsonPipe],
+  imports: [JsonPipe, ActivityDetailsComponent, NewBookingComponent],
   providers: [BookingService, BookingStore],
   template: `
-    <pre>{{ activity() | json }}</pre>
+    <lab-activity-details [activity]="activity()" />
     <pre>{{ bookings() | json }}</pre>
     <p>Booked places: {{ bookedPlaces() }}</p>
-    <button (click)="onBookNow()">Book now</button>
+    <lab-new-booking
+      [activity]="activity()"
+      [bookedPlaces]="bookedPlaces()"
+      (book)="onBookNow($event)"></lab-new-booking>
   `,
 })
 export default class BookingPage {
@@ -28,7 +32,11 @@ export default class BookingPage {
   // * Signals division
 
   activity: Signal<Activity> = this.#store.activity;
-  bookings: Signal<Booking[]> = this.#store.bookings;
+  bookings: Signal<string[]> = computed(() =>
+    this.#store
+      .bookings()
+      .map((booking) => `${booking.participants} participant/s booked on ${booking.date}`),
+  );
   bookedPlaces: Signal<number> = this.#store.bookedPlaces;
 
   constructor() {
@@ -38,7 +46,7 @@ export default class BookingPage {
 
   // * Event handlers division
 
-  onBookNow() {
-    this.#service.dispatchPostBooking(this.activity().id, 1);
+  onBookNow(participants: number) {
+    this.#service.dispatchPostBooking(this.activity().id, participants);
   }
 }
