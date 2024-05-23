@@ -16,7 +16,7 @@ import { SearchBarComponent } from './search-bar.component';
   providers: [HomeService],
   template: `
     <h1>Activities</h1>
-    <lab-search-bar (search)="onSearch($event)" />
+    <lab-search-bar [placeholder]="'Search activities...'" (search)="onSearch($event)" />
     <lab-activity-list [activities]="activities()" />
   `,
 })
@@ -30,7 +30,14 @@ export default class HomePage {
   /** List of activities */
   activities: Signal<Activity[]> = this.#service.activities;
 
-  onSearch(value: string) {
-    this.#service.dispatchSearch(value);
+  // constructor() {
+  //   this.#service.dispatchProductSearchByTerm('');
+  // }
+
+  // * event handlers division
+
+  /** when the user search for something, set it on the store */
+  onSearch(term: string) {
+    if (typeof term === 'string') this.#service.dispatchProductSearchByTerm(term);
   }
 }

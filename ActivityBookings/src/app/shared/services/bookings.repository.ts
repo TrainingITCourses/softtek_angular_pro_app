@@ -16,6 +16,8 @@ export class BookingsRepository {
   /** The HTTP client to make requests to the API */
   #http: HttpClient = inject(HttpClient);
 
+  // * Public methods division
+
   /**
    * Get bookings for an Activity from the API
    * @param activityId The ID of the activity to get the bookings

@@ -17,10 +17,10 @@ import { LocationComponent } from '@ui/location.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    ActivityStatusComponent,
     CurrencyComponent,
     DateComponent,
     LocationComponent,
-    ActivityStatusComponent,
     RouterLink,
   ],
   template: `

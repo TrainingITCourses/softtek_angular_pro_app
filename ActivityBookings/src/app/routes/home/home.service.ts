@@ -16,19 +16,20 @@ export class HomeService {
   /** The repository used to get activities data from the API*/
   #activitiesRepository: ActivitiesRepository = inject(ActivitiesRepository);
 
-  #search$ = new BehaviorSubject<string>('');
-
+  #searchTerm$ = new BehaviorSubject<string>('');
   // * Public signals division
+
+  // activities: Signal<Activity[]> = toSignal(this.#activitiesRepository.getActivities$(), {
+  //   initialValue: [],
+  // });
 
   /** List of activities */
   activities: Signal<Activity[]> = toSignal(
-    this.#search$.pipe(switchMap((query) => this.#activitiesRepository.getByQuery$(query))),
-    {
-      initialValue: [],
-    },
+    this.#searchTerm$.pipe(switchMap((term) => this.#activitiesRepository.getByQuery$(term))),
+    { initialValue: [] },
   );
 
-  dispatchSearch(query: string): void {
-    this.#search$.next(query);
+  dispatchProductSearchByTerm(term: string) {
+    this.#searchTerm$.next(term);
   }
 }
