@@ -1,6 +1,4 @@
-import { Injectable, inject } from '@angular/core';
-import { getNextActivityStatus } from '@domain/activity.logic';
-import { ActivityStatus } from '@domain/activity.type';
+import { Injectable, effect, inject } from '@angular/core';
 import { Booking } from '@domain/booking.type';
 import { ActivitiesRepository } from '@services/activities.repository';
 import { BookingsRepository } from '@services/bookings.repository';
@@ -10,39 +8,50 @@ import { BookingStore } from './booking.store';
 
 @Injectable()
 export class BookingService {
+  // * Injected services division
+
   #activitiesRepository: ActivitiesRepository = inject(ActivitiesRepository);
   #bookingsRepository: BookingsRepository = inject(BookingsRepository);
 
   #bookingStore: BookingStore = inject(BookingStore);
 
+  #onActivityStatusChange = effect(() => {
+    const status = this.#bookingStore.activityStatus();
+    console.log('Activity status changed', status);
+    this.#dispatchPutActivity();
+  });
+
   dispatchGetActivityWithBookingsBySlug(slug: string): void {
-    this.#getActivityWithBookingsBySlug$(slug).subscribe((activity) => {
-      console.log('Activity with bookings loaded', activity);
-      this.#bookingStore.setActivity(activity);
+    this.#getActivityWithBookingsBySlug$(slug).subscribe((activityWithBookings) => {
+      console.log('Activity with bookings loaded', activityWithBookings);
+      this.#bookingStore.setActivity(activityWithBookings);
     });
   }
 
   dispatchPostBooking(activityId: string, participants: number): void {
     this.#postBooking$(activityId, participants).subscribe((booking) => {
-      console.log('Booking created, need to reload', booking);
-      const activity = this.#bookingStore.activity();
+      console.log('Booking created', booking);
       this.#bookingStore.setNewBooking(booking);
-      const newStatus: ActivityStatus = getNextActivityStatus(
-        activity,
-        this.#bookingStore.bookedPlaces(), // ! not updated
-      );
-      if (newStatus !== activity.status) {
-        this.dispatchPutActivity(activity);
-      }
+      // const activity = this.#bookingStore.activity();
+      // const newStatus: ActivityStatus = getNextActivityStatus(
+      //   activity,
+      //   this.#bookingStore.bookedPlaces(), // ! not updated
+      // );
+      // if (newStatus !== activity.status) {
+      //   this.#dispatchPutActivity(activity);
+      // }
       // this.dispatchGetActivityWithBookingsBySlug(activity.slug);
     });
   }
 
-  dispatchPutActivity(activity: ActivityWithBookings): void {
-    const { bookings, ...activityWithoutBookings } = activity;
+  #dispatchPutActivity(): void {
+    const activity = this.#bookingStore.activity();
+    if (activity.id === '') return;
     this.#activitiesRepository
-      .putActivity$(activityWithoutBookings)
-      .subscribe(() => this.#bookingStore.changeActivityStatus(activity.status));
+      .putActivity$(activity)
+      .subscribe
+      //() => this.#bookingStore.changeActivityStatus(activity.status)
+      ();
   }
 
   /**

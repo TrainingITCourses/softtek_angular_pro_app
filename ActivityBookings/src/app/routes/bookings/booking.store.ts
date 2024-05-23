@@ -1,38 +1,55 @@
 import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
-import { ActivityStatus, NULL_ACTIVITY } from '@domain/activity.type';
-import { Booking, NULL_BOOKING } from '@domain/booking.type';
+import { getBookedPlaces, getNextActivityStatus } from '@domain/activity.logic';
+import { Activity, ActivityStatus, NULL_ACTIVITY } from '@domain/activity.type';
+import { Booking } from '@domain/booking.type';
 import { ActivityWithBookings } from './activity-with-bookings.type';
 
 @Injectable()
 export class BookingStore {
-  #activity: WritableSignal<ActivityWithBookings> = signal({ ...NULL_ACTIVITY, bookings: [] });
-  #newBooking: WritableSignal<Booking> = signal(NULL_BOOKING);
+  #activityWithBookings: WritableSignal<ActivityWithBookings> = signal({
+    ...NULL_ACTIVITY,
+    bookings: [],
+  });
+  //activityStatus: WritableSignal<ActivityStatus> = signal(NULL_ACTIVITY.status);
 
-  activity: Signal<ActivityWithBookings> = this.#activity.asReadonly();
-  newBooking: Signal<Booking> = this.#newBooking.asReadonly();
+  // * selectors division
 
-  bookedPlaces: Signal<number> = computed(() => {
-    const activity = this.activity();
-    const bookings = activity.bookings;
-    return bookings.reduce((acc, booking) => acc + booking.participants, 0);
+  activityWithBookings: Signal<ActivityWithBookings> = this.#activityWithBookings.asReadonly();
+
+  activity: Signal<Activity> = computed(() => {
+    const activityWithBookings = this.#activityWithBookings();
+    const { bookings, ...activity } = activityWithBookings;
+    return activity;
   });
 
+  bookings: Signal<Booking[]> = computed(() => this.#activityWithBookings().bookings);
+
+  activityStatus: Signal<ActivityStatus> = computed(() => this.#activityWithBookings().status);
+
+  bookedPlaces: Signal<number> = computed(() => getBookedPlaces(this.bookings()));
+
+  // * reducers division
+
   setActivity(activity: ActivityWithBookings): void {
-    this.#activity.set(activity);
+    this.#activityWithBookings.set(activity);
   }
 
   setNewBooking(booking: Booking): void {
-    this.#newBooking.set(booking);
-    this.#activity.update((activity) => {
-      activity.bookings.push(booking);
-      return { ...activity };
+    this.#activityWithBookings.update((activityWithBookings) => {
+      activityWithBookings.bookings = [...activityWithBookings.bookings, booking];
+      const bookedPlaces = getBookedPlaces(activityWithBookings.bookings);
+      const newStatus = getNextActivityStatus(activityWithBookings, bookedPlaces);
+      if (newStatus.toLocaleLowerCase() !== activityWithBookings.status.toLocaleLowerCase()) {
+        activityWithBookings.status = newStatus;
+      }
+      return { ...activityWithBookings };
     });
   }
 
   changeActivityStatus(newStatus: ActivityStatus): void {
-    this.#activity.update((activity) => {
-      activity.status = newStatus;
-      return { ...activity };
+    this.#activityWithBookings.update((activityWithBookings) => {
+      activityWithBookings.status = newStatus;
+      return { ...activityWithBookings };
     });
   }
 }

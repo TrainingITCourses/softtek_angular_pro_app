@@ -1,4 +1,5 @@
 import { Activity, ActivityStatus } from './activity.type';
+import { Booking } from './booking.type';
 
 /**
  * Calculate the next status of an activity based on the total number of participants
@@ -13,4 +14,16 @@ export function getNextActivityStatus(activity: Activity, participants: number):
   if (participants >= activity.maxParticipants) return 'sold-out';
   if (participants >= activity.minParticipants) return 'confirmed';
   return activity.status;
+}
+
+/**
+ * Calculate the total number of booked places from the bookings
+ * @param bookings The bookings to calculate the total number of participants
+ * @returns The total number of participants
+ */
+export function getBookedPlaces(bookings: Booking[]): number {
+  console.log('calculating bookings', bookings);
+  const result = bookings.reduce((acc, booking) => acc + booking.participants, 0);
+  console.log('result', result);
+  return result;
 }
