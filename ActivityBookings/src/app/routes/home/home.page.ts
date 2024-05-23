@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Signal, inject } from '@angular/cor
 import { Activity } from '@domain/activity.type';
 import { ActivityListComponent } from './activity-list.component';
 import { HomeService } from './home.service';
+import { SearchBarComponent } from './search-bar.component';
 
 /**
  * Routed component for the Home page.
@@ -11,10 +12,11 @@ import { HomeService } from './home.service';
 @Component({
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ActivityListComponent],
+  imports: [ActivityListComponent, SearchBarComponent],
   providers: [HomeService],
   template: `
     <h1>Activities</h1>
+    <lab-search-bar (search)="onSearch($event)" />
     <lab-activity-list [activities]="activities()" />
   `,
 })
@@ -27,4 +29,8 @@ export default class HomePage {
 
   /** List of activities */
   activities: Signal<Activity[]> = this.#service.activities;
+
+  onSearch(value: string) {
+    console.log('Searching for:', value);
+  }
 }
