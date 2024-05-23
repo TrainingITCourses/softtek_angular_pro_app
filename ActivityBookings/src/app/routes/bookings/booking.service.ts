@@ -20,6 +20,15 @@ export class BookingService {
     this.#dispatchPutActivity();
   });
 
+  //constructor() {
+  // effect(() => {
+  //   const updated = this.#bookingStore.activityStatusUpdated();
+  //   if (!updated) return;
+  //   console.log('Activity status updated', updated);
+  //   this.#dispatchPutActivity();
+  // });
+  //}
+
   dispatchGetActivityWithBookingsBySlug(slug: string): void {
     this.#activitiesRepository.getBySlug$(slug).subscribe((activity) => {
       console.log('Activity  loaded', activity);
@@ -36,6 +45,7 @@ export class BookingService {
     this.#bookingsRepository.postBooking$(booking).subscribe((booking) => {
       console.log('Booking created', booking);
       this.#bookingStore.addNewBooking(booking);
+      this.#bookingStore.checkActivityStatus();
     });
   }
 

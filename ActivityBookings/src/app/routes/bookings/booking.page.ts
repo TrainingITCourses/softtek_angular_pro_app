@@ -32,6 +32,7 @@ export default class BookingPage {
   // * Signals division
 
   activity: Signal<Activity> = this.#store.activity;
+
   bookings: Signal<string[]> = computed(() =>
     this.#store
       .bookings()
