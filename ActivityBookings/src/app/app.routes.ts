@@ -10,4 +10,8 @@ export const routes: Routes = [
     path: '',
     loadComponent: () => import('./routes/home/home.page'),
   },
+  {
+    path: 'bookings/:slug',
+    loadComponent: () => import('./routes/bookings/booking.page'),
+  },
 ];
