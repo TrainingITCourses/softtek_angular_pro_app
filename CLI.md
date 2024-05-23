@@ -54,6 +54,9 @@ ng g c shared/ui/location
    - Simple Redux with Signals and RxJs
 
 ```bash
+# searching home page
+ng g c routes/home/search-bar
+
 # Bookings:slug page
 ng g c routes/bookings/booking --type=page
 ng g s routes/bookings/booking

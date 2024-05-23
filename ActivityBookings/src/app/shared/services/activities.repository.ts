@@ -48,6 +48,11 @@ export class ActivitiesRepository {
       .pipe(map((activities) => activities[0] || NULL_ACTIVITY));
   }
 
+  getByQuery$(query: string): Observable<Activity[]> {
+    const url = `${this.#apiUrl}/?q=${query}`;
+    return this.#http.get<Activity[]>(url);
+  }
+
   putActivity$(activity: Activity): Observable<Activity> {
     const url = `${this.#apiUrl}/${activity.id}`;
     return this.#http.put<Activity>(url, activity);
