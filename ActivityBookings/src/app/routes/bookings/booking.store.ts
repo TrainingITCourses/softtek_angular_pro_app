@@ -2,54 +2,40 @@ import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/c
 import { getBookedPlaces, getNextActivityStatus } from '@domain/activity.logic';
 import { Activity, ActivityStatus, NULL_ACTIVITY } from '@domain/activity.type';
 import { Booking } from '@domain/booking.type';
-import { ActivityWithBookings } from './activity-with-bookings.type';
 
 @Injectable()
 export class BookingStore {
-  #activityWithBookings: WritableSignal<ActivityWithBookings> = signal({
-    ...NULL_ACTIVITY,
-    bookings: [],
-  });
-  //activityStatus: WritableSignal<ActivityStatus> = signal(NULL_ACTIVITY.status);
+  #activity: WritableSignal<Activity> = signal<Activity>(NULL_ACTIVITY);
+  #bookings: WritableSignal<Booking[]> = signal<Booking[]>([]);
+  #activityStatusUpdated: WritableSignal<boolean> = signal<boolean>(false);
 
   // * selectors division
 
-  activityWithBookings: Signal<ActivityWithBookings> = this.#activityWithBookings.asReadonly();
+  activity: Signal<Activity> = this.#activity.asReadonly();
 
-  activity: Signal<Activity> = computed(() => {
-    const activityWithBookings = this.#activityWithBookings();
-    const { bookings, ...activity } = activityWithBookings;
-    return activity;
-  });
+  bookings: Signal<Booking[]> = this.#bookings.asReadonly();
 
-  bookings: Signal<Booking[]> = computed(() => this.#activityWithBookings().bookings);
+  activityStatusUpdated: Signal<Boolean> = this.#activityStatusUpdated.asReadonly();
 
-  activityStatus: Signal<ActivityStatus> = computed(() => this.#activityWithBookings().status);
-
-  bookedPlaces: Signal<number> = computed(() => getBookedPlaces(this.bookings()));
+  bookedPlaces: Signal<number> = computed(() => getBookedPlaces(this.#bookings()));
 
   // * reducers division
 
-  setActivity(activity: ActivityWithBookings): void {
-    this.#activityWithBookings.set(activity);
+  setActivity(activity: Activity): void {
+    this.#activity.set(activity);
   }
 
-  setNewBooking(booking: Booking): void {
-    this.#activityWithBookings.update((activityWithBookings) => {
-      activityWithBookings.bookings = [...activityWithBookings.bookings, booking];
-      const bookedPlaces = getBookedPlaces(activityWithBookings.bookings);
-      const newStatus = getNextActivityStatus(activityWithBookings, bookedPlaces);
-      if (newStatus.toLocaleLowerCase() !== activityWithBookings.status.toLocaleLowerCase()) {
-        activityWithBookings.status = newStatus;
-      }
-      return { ...activityWithBookings };
-    });
+  addNewBooking(booking: Booking): void {
+    this.#bookings.update((bookings) => [...bookings, booking]);
+    const bookedPlaces = getBookedPlaces(this.#bookings());
+    const newStatus = getNextActivityStatus(this.#activity(), bookedPlaces);
+    if (newStatus.toLocaleLowerCase() !== this.#activity().status.toLocaleLowerCase()) {
+      this.changeActivityStatus(newStatus);
+    }
   }
 
   changeActivityStatus(newStatus: ActivityStatus): void {
-    this.#activityWithBookings.update((activityWithBookings) => {
-      activityWithBookings.status = newStatus;
-      return { ...activityWithBookings };
-    });
+    this.#activity.update((activity) => ({ ...activity, status: newStatus }));
+    this.#activityStatusUpdated.set(true);
   }
 }

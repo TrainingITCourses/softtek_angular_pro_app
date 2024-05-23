@@ -3,7 +3,6 @@ import { ChangeDetectionStrategy, Component, Signal, inject } from '@angular/cor
 import { ActivatedRoute } from '@angular/router';
 import { Activity } from '@domain/activity.type';
 import { Booking } from '@domain/booking.type';
-import { ActivityWithBookings } from './activity-with-bookings.type';
 import { BookingService } from './booking.service';
 import { BookingStore } from './booking.store';
 
@@ -28,7 +27,6 @@ export default class BookingPage {
 
   // * Signals division
 
-  activityWithBookings: Signal<ActivityWithBookings> = this.#store.activityWithBookings;
   activity: Signal<Activity> = this.#store.activity;
   bookings: Signal<Booking[]> = this.#store.bookings;
   bookedPlaces: Signal<number> = this.#store.bookedPlaces;
@@ -41,6 +39,6 @@ export default class BookingPage {
   // * Event handlers division
 
   onBookNow() {
-    this.#service.dispatchPostBooking(this.activityWithBookings().id, 1);
+    this.#service.dispatchPostBooking(this.activity().id, 1);
   }
 }
