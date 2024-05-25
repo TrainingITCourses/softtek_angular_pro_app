@@ -7,17 +7,16 @@ import { Booking } from '@domain/booking.type';
 export class BookingStore {
   #activity: WritableSignal<Activity> = signal<Activity>(NULL_ACTIVITY);
   #bookings: WritableSignal<Booking[]> = signal<Booking[]>([]);
-  #activityStatusUpdated: WritableSignal<boolean> = signal<boolean>(false);
 
   // * selectors division
 
   activity: Signal<Activity> = this.#activity.asReadonly();
-
   bookings: Signal<Booking[]> = this.#bookings.asReadonly();
 
-  activityStatusUpdated: Signal<Boolean> = this.#activityStatusUpdated.asReadonly();
-
   bookedPlaces: Signal<number> = computed(() => getBookedPlaces(this.#bookings()));
+  nextActivityStatus: Signal<ActivityStatus> = computed(() =>
+    getNextActivityStatus(this.activity(), this.bookedPlaces()),
+  );
 
   // * reducers division
 
@@ -29,16 +28,7 @@ export class BookingStore {
     this.#bookings.update((bookings) => [...bookings, booking]);
   }
 
-  checkActivityStatus() {
-    const bookedPlaces = getBookedPlaces(this.#bookings());
-    const newStatus = getNextActivityStatus(this.#activity(), bookedPlaces);
-    if (newStatus.toLocaleLowerCase() !== this.#activity().status.toLocaleLowerCase()) {
-      this.#changeActivityStatus(newStatus);
-    }
-  }
-
-  #changeActivityStatus(newStatus: ActivityStatus): void {
+  changeActivityStatus(newStatus: ActivityStatus): void {
     this.#activity.update((activity) => ({ ...activity, status: newStatus }));
-    this.#activityStatusUpdated.set(true);
   }
 }

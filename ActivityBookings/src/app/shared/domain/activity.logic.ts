@@ -22,8 +22,6 @@ export function getNextActivityStatus(activity: Activity, participants: number):
  * @returns The total number of participants
  */
 export function getBookedPlaces(bookings: Booking[]): number {
-  console.log('calculating bookings', bookings);
   const result = bookings.reduce((acc, booking) => acc + booking.participants, 0);
-  console.log('result', result);
   return result;
 }
