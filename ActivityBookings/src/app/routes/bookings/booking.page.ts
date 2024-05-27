@@ -1,7 +1,6 @@
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Activity } from '@domain/activity.type';
+import { Activity, ActivityStatus } from '@domain/activity.type';
 import { ActivityDetailsComponent } from './activity-details.component';
 import { BookingService } from './booking.service';
 import { BookingStore } from './booking.store';
@@ -11,11 +10,12 @@ import { NewBookingComponent } from './new-booking.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [JsonPipe, ActivityDetailsComponent, NewBookingComponent],
-  providers: [BookingService, BookingStore],
+  providers: [BookingStore, BookingService],
   template: `
     <lab-activity-details [activity]="activity()" />
     <pre>{{ bookings() | json }}</pre>
     <p>Booked places: {{ bookedPlaces() }}</p>
+    <p>Activity status: {{ activityStatus() }}</p>
     <lab-new-booking
       [activity]="activity()"
       [bookedPlaces]="bookedPlaces()"
@@ -23,31 +23,27 @@ import { NewBookingComponent } from './new-booking.component';
   `,
 })
 export default class BookingPage {
+  // ! Signal world
+
   // * Injected services division
 
-  #route = inject(ActivatedRoute);
-  #service = inject(BookingService);
-  #store: BookingStore = inject(BookingStore);
+  #store = inject(BookingStore);
 
   // * Signals division
 
   activity: Signal<Activity> = this.#store.activity;
 
-  bookings: Signal<string[]> = computed(() =>
-    this.#store
-      .bookings()
-      .map((booking) => `${booking.participants} participant/s booked on ${booking.date}`),
-  );
+  activityStatus: Signal<ActivityStatus> = this.#store.nextActivityStatus;
+
   bookedPlaces: Signal<number> = this.#store.bookedPlaces;
 
-  constructor() {
-    const slug: string = this.#route.snapshot.paramMap.get('slug') || '';
-    this.#service.dispatchGetActivityWithBookingsBySlug(slug);
-  }
+  bookings: Signal<string[]> = computed(() =>
+    this.#store.bookings().map((booking) => `${booking.participants} booked on ${booking.date}`),
+  );
 
   // * Event handlers division
 
   onBookNow(participants: number) {
-    this.#service.dispatchPostBooking(this.activity().id, participants);
+    this.#store.dispatchPostBooking(this.activity().id, participants);
   }
 }

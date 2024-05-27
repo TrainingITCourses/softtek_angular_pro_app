@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Activity, NULL_ACTIVITY } from '@domain/activity.type';
 import { environment } from '@env/environment';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 /**
  * Repository service for the activities.
@@ -42,6 +42,7 @@ export class ActivitiesRepository {
    * @returns An observable with the activity
    */
   getBySlug$(slug: string): Observable<Activity> {
+    if (slug === '') return of(NULL_ACTIVITY);
     const url = `${this.#apiUrl}/?key=slug&value=${slug}`;
     return this.#http
       .get<Activity[]>(url)
@@ -54,6 +55,7 @@ export class ActivitiesRepository {
   }
 
   putActivity$(activity: Activity): Observable<Activity> {
+    if (activity === NULL_ACTIVITY) return of(NULL_ACTIVITY);
     const url = `${this.#apiUrl}/${activity.id}`;
     return this.#http.put<Activity>(url, activity);
   }

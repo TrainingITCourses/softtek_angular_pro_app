@@ -1,34 +1,66 @@
-import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
+import { Injectable, Signal, computed, effect, inject, untracked } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { getBookedPlaces, getNextActivityStatus } from '@domain/activity.logic';
 import { Activity, ActivityStatus, NULL_ACTIVITY } from '@domain/activity.type';
 import { Booking } from '@domain/booking.type';
+import { BookingService } from './booking.service';
 
 @Injectable()
 export class BookingStore {
-  #activity: WritableSignal<Activity> = signal<Activity>(NULL_ACTIVITY);
-  #bookings: WritableSignal<Booking[]> = signal<Booking[]>([]);
+  // ! Interop Signal-Observable world
 
-  // * selectors division
+  // * Injected services division
 
-  activity: Signal<Activity> = this.#activity.asReadonly();
-  bookings: Signal<Booking[]> = this.#bookings.asReadonly();
+  #bookingService: BookingService = inject(BookingService);
 
-  bookedPlaces: Signal<number> = computed(() => getBookedPlaces(this.#bookings()));
+  // * Signals division
+
+  activity: Signal<Activity> = toSignal(this.#bookingService.getActivity$(), {
+    initialValue: NULL_ACTIVITY,
+  });
+
+  bookings: Signal<Booking[]> = toSignal(this.#bookingService.getBookings$(), { initialValue: [] });
+
+  // * Computed signals division
+
+  #activityId: Signal<string> = computed(() => this.activity().id);
+  bookedPlaces: Signal<number> = computed(() => getBookedPlaces(this.bookings()));
   nextActivityStatus: Signal<ActivityStatus> = computed(() =>
     getNextActivityStatus(this.activity(), this.bookedPlaces()),
   );
 
-  // * reducers division
+  // * Effects division
 
-  setActivity(activity: Activity): void {
-    this.#activity.set(activity);
+  readonly #onActivityIdUpdatedEffect = effect(() => {
+    const activityId = this.#activityId();
+    if (activityId !== '') {
+      untracked(() => this.#dispatchGetBookingsByActivityId(activityId));
+    }
+  });
+
+  readonly #onActivityStatusUpdatedEffect = effect(() => {
+    const activity = this.activity();
+    const nextStatus = this.nextActivityStatus();
+    if (activity.status !== nextStatus) {
+      untracked(() => this.#dispatchPutNewActivityStatus(activity, nextStatus));
+    }
+  });
+
+  // * Dispatchers division
+
+  // ToDo: Could be generalized to a single dispatcher method receiving an action type and payload
+
+  dispatchPostBooking(activityId: string, participants: number): void {
+    const booking: Booking = { activityId, participants, date: new Date(), userId: '0', id: '' };
+    this.#bookingService.newBooking$.next(booking);
   }
 
-  addNewBooking(booking: Booking): void {
-    this.#bookings.update((bookings) => [...bookings, booking]);
+  #dispatchGetBookingsByActivityId(activityId: string): void {
+    this.#bookingService.activityId$.next(activityId);
   }
 
-  changeActivityStatus(newStatus: ActivityStatus): void {
-    this.#activity.update((activity) => ({ ...activity, status: newStatus }));
+  #dispatchPutNewActivityStatus(activity: Activity, status: ActivityStatus): void {
+    const updatedActivity = { ...activity, status };
+    this.#bookingService.updatedActivity$.next(updatedActivity);
   }
 }

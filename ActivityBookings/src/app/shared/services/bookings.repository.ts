@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Booking } from '@domain/booking.type';
+import { Booking, NULL_BOOKING } from '@domain/booking.type';
 import { environment } from '@env/environment';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class BookingsRepository {
@@ -24,6 +24,7 @@ export class BookingsRepository {
    * @returns An observable with the bookings
    */
   getByActivityId$(activityId: string): Observable<Booking[]> {
+    if (activityId === '') return of([]);
     const url = `${this.#apiUrl}/?key=activityId&value=${activityId}`;
     return this.#http.get<Booking[]>(url);
   }
@@ -34,6 +35,7 @@ export class BookingsRepository {
    * @returns An observable with the booking
    */
   postBooking$(booking: Booking): Observable<Booking> {
+    if (booking === NULL_BOOKING) return of(NULL_BOOKING);
     return this.#http.post<Booking>(this.#apiUrl, booking);
   }
 }
