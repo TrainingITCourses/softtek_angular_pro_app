@@ -1,6 +1,5 @@
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Activity } from '@domain/activity.type';
 import { ActivityDetailsComponent } from './activity-details.component';
 import { BookingService } from './booking.service';
@@ -25,7 +24,6 @@ import { NewBookingComponent } from './new-booking.component';
 export default class BookingPage {
   // * Injected services division
 
-  #route = inject(ActivatedRoute);
   #service = inject(BookingService);
   #store: BookingStore = inject(BookingStore);
 
@@ -39,11 +37,6 @@ export default class BookingPage {
       .map((booking) => `${booking.participants} participant/s booked on ${booking.date}`),
   );
   bookedPlaces: Signal<number> = this.#store.bookedPlaces;
-
-  constructor() {
-    const slug: string = this.#route.snapshot.paramMap.get('slug') || '';
-    this.#service.dispatchGetActivityWithBookingsBySlug(slug);
-  }
 
   // * Event handlers division
 

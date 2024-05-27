@@ -24,11 +24,15 @@ export class BookingStore {
     this.#activity.set(activity);
   }
 
-  addNewBooking(booking: Booking): void {
-    this.#bookings.update((bookings) => [...bookings, booking]);
+  setBookings(bookings: Booking[]): void {
+    this.#bookings.set(bookings);
   }
 
-  changeActivityStatus(newStatus: ActivityStatus): void {
-    this.#activity.update((activity) => ({ ...activity, status: newStatus }));
+  addNewBooking(newBooking: Booking): void {
+    this.#bookings.update((bookings) => [...bookings, newBooking]);
+  }
+
+  changeActivityStatus(status: ActivityStatus): void {
+    this.#activity.update((activity) => ({ ...activity, status }));
   }
 }
