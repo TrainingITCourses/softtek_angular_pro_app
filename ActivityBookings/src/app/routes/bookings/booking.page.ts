@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Activity } from '@domain/activity.type';
@@ -10,11 +9,17 @@ import { NewBookingComponent } from './new-booking.component';
 @Component({
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [JsonPipe, ActivityDetailsComponent, NewBookingComponent],
+  imports: [ActivityDetailsComponent, NewBookingComponent],
   providers: [BookingStore],
   template: `
     <lab-activity-details [activity]="activity()" />
-    <pre>{{ bookings() | json }}</pre>
+    <ul>
+      @for(booking of bookings(); track booking){
+      <li>{{ booking }}</li>
+      } @empty {
+      <li>No bookings yet</li>
+      }
+    </ul>
     <section>
       <div>
         <span>Booked places:</span> <mark>{{ bookedPlaces() }}</mark>
