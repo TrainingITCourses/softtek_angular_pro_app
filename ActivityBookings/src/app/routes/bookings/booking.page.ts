@@ -2,6 +2,7 @@ import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Activity } from '@domain/activity.type';
+import { map } from 'rxjs';
 import { ActivityDetailsComponent } from './activity-details.component';
 import { BookingStore } from './booking.store';
 import { NewBookingComponent } from './new-booking.component';
@@ -39,10 +40,9 @@ export default class BookingPage {
   bookedPlaces: Signal<number> = this.#store.bookedPlaces;
 
   constructor() {
-    this.#route.paramMap.subscribe((params) => {
-      const slug: string = params.get('slug') || '';
-      this.#store.dispatchGetActivityWithBookingsBySlug(slug);
-    });
+    this.#route.paramMap // ! should be unsubscribed
+      .pipe(map((params) => params.get('slug') || ''))
+      .subscribe((slug) => this.#store.dispatchGetActivityWithBookingsBySlug(slug));
   }
 
   // * Event handlers division

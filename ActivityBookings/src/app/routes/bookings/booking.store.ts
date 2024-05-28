@@ -74,27 +74,27 @@ export class BookingStore {
 
   dispatchGetActivityWithBookingsBySlug(slug: string): void {
     this.#service
-      .getActivityBySlug$(slug) // should be unsubscribed
+      .getActivityBySlug$(slug) // ! should be unsubscribed
       .subscribe((activity) => this.setActivity(activity));
   }
 
   #dispatchGetBookingsByActivityId(activityId: string): void {
     this.#service
-      .getBookingsByActivityId$(activityId) // should be unsubscribed
+      .getBookingsByActivityId$(activityId) // ! should be unsubscribed
       .subscribe((bookings) => this.setBookings(bookings));
   }
 
   dispatchPostBooking(activityId: string, participants: number): void {
     const booking: Booking = { activityId, participants, date: new Date(), userId: '0', id: '' };
     this.#service
-      .postBooking$(booking) // should be unsubscribed
+      .postBooking$(booking) // ! should be unsubscribed
       .subscribe((booking) => this.addNewBooking(booking));
   }
 
   #dispatchPutNewActivityStatus(activity: Activity, nextStatus: ActivityStatus): void {
     const updatedActivity = { ...activity, status: nextStatus };
     this.#service
-      .putActivity$(updatedActivity) // should be unsubscribed
+      .putActivity$(updatedActivity) // ! should be unsubscribed
       .subscribe((_) => this.changeActivityStatus(nextStatus));
   }
 }
