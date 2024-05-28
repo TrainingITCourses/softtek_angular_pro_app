@@ -23,12 +23,20 @@ import { NewBookingComponent } from './new-booking.component';
   template: `
     <lab-activity-details [activity]="activity()" />
     <pre>{{ bookings() | json }}</pre>
-    <p>Booked places: {{ bookedPlaces() }}</p>
-    <p>Activity status: {{ activityStatus() }}</p>
+    <section>
+      <div>
+        <span>Booked places:</span> <mark>{{ bookedPlaces() }}</mark>
+      </div>
+      <div>
+        <span>Remaining places:</span> <mark>{{ remainingPlaces() }}</mark>
+      </div>
+    </section>
+    @if(isBookable()){
     <lab-new-booking
       [activity]="activity()"
       [bookedPlaces]="bookedPlaces()"
       (book)="onBookNow($event)"></lab-new-booking>
+    }
   `,
 })
 export default class BookingPage {
@@ -50,6 +58,14 @@ export default class BookingPage {
 
   bookings: Signal<string[]> = computed(() =>
     this.#store.bookings().map((booking) => `${booking.participants} booked on ${booking.date}`),
+  );
+
+  remainingPlaces: Signal<number> = computed(
+    () => this.activity().maxParticipants - this.bookedPlaces(),
+  );
+
+  isBookable: Signal<boolean> = computed(
+    () => this.activity().status === 'published' || this.activity().status === 'confirmed',
   );
 
   // * Effects division
