@@ -39,8 +39,10 @@ export default class BookingPage {
   bookedPlaces: Signal<number> = this.#store.bookedPlaces;
 
   constructor() {
-    const slug: string = this.#route.snapshot.paramMap.get('slug') || '';
-    this.#store.dispatchGetActivityWithBookingsBySlug(slug);
+    this.#route.paramMap.subscribe((params) => {
+      const slug: string = params.get('slug') || '';
+      this.#store.dispatchGetActivityWithBookingsBySlug(slug);
+    });
   }
 
   // * Event handlers division
