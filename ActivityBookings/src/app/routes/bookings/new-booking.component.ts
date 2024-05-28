@@ -30,12 +30,6 @@ import { Activity } from '@domain/activity.type';
         (change)="onParticipantChange($event)" />
       <button [disabled]="!canBook()" (click)="onBook()">Book</button>
     </section>
-
-    <!-- <h3>Doble: {{ doble() }}</h3>
-    <h3>Es múltiplo de tres: {{ esMultiploDe3() }}</h3>
-    <h3>Es múltiplo de tres EN LETRAS: {{ esMultiploDeTres() }}</h3>
-    <h3>Es grande: {{ esGrande() }}</h3>
-    <h3>Es múltiplo de tres y grande: {{ esMultiplode3Grande() }}</h3> -->
   `,
   styles: ``,
 })
@@ -62,29 +56,5 @@ export class NewBookingComponent {
 
   onBook() {
     this.book.emit(this.participants());
-  }
-
-  // doble = computed(() => this.participants() * 2);
-
-  // esMultiploDe3 = computed(() => {
-  //   // this.esMultiploDeTres.set(this.participants() % 3 === 0);
-  //   return this.participants() % 3 === 0;
-  // });
-
-  // esMultiploDeTres = signal<boolean>(false);
-
-  // esGrande = computed(() => this.participants() > 4);
-
-  // esMultiplode3Grande = computed(() => this.esMultiploDe3() && this.esGrande());
-
-  constructor() {
-    // effect(
-    //   () => {
-    //     this.esMultiploDeTres.set(this.participants() % 3 === 0);
-    //   },
-    //   {
-    //     allowSignalWrites: true,
-    //   },
-    // );
   }
 }

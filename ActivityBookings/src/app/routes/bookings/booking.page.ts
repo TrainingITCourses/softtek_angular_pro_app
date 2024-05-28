@@ -15,11 +15,20 @@ import { NewBookingComponent } from './new-booking.component';
   template: `
     <lab-activity-details [activity]="activity()" />
     <pre>{{ bookings() | json }}</pre>
-    <p>Booked places: {{ bookedPlaces() }}</p>
+    <section>
+      <div>
+        <span>Booked places:</span> <mark>{{ bookedPlaces() }}</mark>
+      </div>
+      <div>
+        <span>Remaining places:</span> <mark>{{ remainingPlaces() }}</mark>
+      </div>
+    </section>
+    @if(isBookable()){
     <lab-new-booking
       [activity]="activity()"
       [bookedPlaces]="bookedPlaces()"
       (book)="onBookNow($event)"></lab-new-booking>
+    }
   `,
 })
 export default class BookingPage {
@@ -38,6 +47,12 @@ export default class BookingPage {
       .map((booking) => `${booking.participants} participant/s booked on ${booking.date}`),
   );
   bookedPlaces: Signal<number> = this.#store.bookedPlaces;
+  remainingPlaces: Signal<number> = computed(
+    () => this.activity().maxParticipants - this.bookedPlaces(),
+  );
+  isBookable: Signal<boolean> = computed(
+    () => this.activity().status === 'published' || this.activity().status === 'confirmed',
+  );
 
   constructor() {
     this.#route.paramMap // ! should be unsubscribed
