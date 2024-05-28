@@ -1,8 +1,8 @@
 import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Activity } from '@domain/activity.type';
 import { ActivityDetailsComponent } from './activity-details.component';
-import { BookingService } from './booking.service';
 import { BookingStore } from './booking.store';
 import { NewBookingComponent } from './new-booking.component';
 
@@ -10,7 +10,7 @@ import { NewBookingComponent } from './new-booking.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [JsonPipe, ActivityDetailsComponent, NewBookingComponent],
-  providers: [BookingService, BookingStore],
+  providers: [BookingStore],
   template: `
     <lab-activity-details [activity]="activity()" />
     <pre>{{ bookings() | json }}</pre>
@@ -24,7 +24,7 @@ import { NewBookingComponent } from './new-booking.component';
 export default class BookingPage {
   // * Injected services division
 
-  #service = inject(BookingService);
+  #route: ActivatedRoute = inject(ActivatedRoute);
   #store: BookingStore = inject(BookingStore);
 
   // * Signals division
@@ -38,9 +38,14 @@ export default class BookingPage {
   );
   bookedPlaces: Signal<number> = this.#store.bookedPlaces;
 
+  constructor() {
+    const slug: string = this.#route.snapshot.paramMap.get('slug') || '';
+    this.#store.dispatchGetActivityWithBookingsBySlug(slug);
+  }
+
   // * Event handlers division
 
-  onBookNow(participants: number) {
-    this.#service.dispatchPostBooking(this.activity().id, participants);
+  onBookNow(participants: number): void {
+    this.#store.dispatchPostBooking(this.activity().id, participants);
   }
 }

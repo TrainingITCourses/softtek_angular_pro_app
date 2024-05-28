@@ -1,60 +1,34 @@
-import { Injectable, effect, inject, untracked } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ActivityStatus } from '@domain/activity.type';
+import { Injectable, inject } from '@angular/core';
+import { Activity } from '@domain/activity.type';
 import { Booking } from '@domain/booking.type';
 import { ActivitiesRepository } from '@services/activities.repository';
 import { BookingsRepository } from '@services/bookings.repository';
-import { BookingStore } from './booking.store';
+import { Observable } from 'rxjs';
 
-// ToDo: try to
-// invert the dependency between BookingService and BookingStore
-// or
-// export BookingStore signals to reduce the dependencies for callers
-
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class BookingService {
   // * Injected services division
 
   #activitiesRepository: ActivitiesRepository = inject(ActivitiesRepository);
   #bookingsRepository: BookingsRepository = inject(BookingsRepository);
-  #route = inject(ActivatedRoute);
 
-  #bookingStore: BookingStore = inject(BookingStore);
+  // * Public methods division
 
-  readonly #onActivityStatusUpdatedEffect = effect(() => {
-    const activity = this.#bookingStore.activity();
-    const nextStatus = this.#bookingStore.nextActivityStatus();
-    if (activity.status !== nextStatus) {
-      untracked(() => this.#dispatchPutNewActivityStatus(nextStatus));
-    }
-  });
-
-  constructor() {
-    const slug: string = this.#route.snapshot.paramMap.get('slug') || '';
-    this.#dispatchGetActivityWithBookingsBySlug(slug);
+  getActivityBySlug$(slug: string): Observable<Activity> {
+    return this.#activitiesRepository.getBySlug$(slug);
   }
 
-  // * Dispatchers division
-
-  dispatchPostBooking(activityId: string, participants: number): void {
-    const booking: Booking = { activityId, participants, date: new Date(), userId: '0', id: '' };
-    this.#bookingsRepository.postBooking$(booking).subscribe((booking) => {
-      this.#bookingStore.addNewBooking(booking);
-    });
+  getBookingsByActivityId$(activityId: string): Observable<Booking[]> {
+    return this.#bookingsRepository.getByActivityId$(activityId);
   }
 
-  #dispatchGetActivityWithBookingsBySlug(slug: string): void {
-    this.#activitiesRepository.getBySlug$(slug).subscribe((activity) => {
-      this.#bookingStore.setActivity(activity);
-      this.#bookingsRepository.getByActivityId$(activity.id).subscribe((bookings) => {
-        this.#bookingStore.setBookings(bookings);
-      });
-    });
+  postBooking$(newBooking: Booking): Observable<Booking> {
+    return this.#bookingsRepository.postBooking$(newBooking);
   }
 
-  #dispatchPutNewActivityStatus(nextStatus: ActivityStatus): void {
-    this.#bookingStore.changeActivityStatus(nextStatus);
-    const activity = this.#bookingStore.activity();
-    this.#activitiesRepository.putActivity$(activity).subscribe();
+  putActivity$(activity: Activity): Observable<Activity> {
+    return this.#activitiesRepository.putActivity$(activity);
   }
 }
