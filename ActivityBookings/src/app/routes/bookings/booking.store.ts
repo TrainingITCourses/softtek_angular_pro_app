@@ -15,6 +15,8 @@ export class BookingStore {
 
   // * Signals division
 
+  error: Signal<string> = toSignal(this.#service.error$, { initialValue: '' });
+
   activity: Signal<Activity> = toSignal(this.#service.getActivity$(), {
     initialValue: NULL_ACTIVITY,
   });

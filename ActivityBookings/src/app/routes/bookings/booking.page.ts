@@ -76,7 +76,7 @@ export default class BookingPage {
   // * Effects division
 
   readonly #onSlugUpdatedEffect = effect(() => {
-    const slug = this.slug();
+    const slug: string = this.slug();
     untracked(() => this.#store.dispatchGetActivityWithBookingsBySlug(slug));
   });
 

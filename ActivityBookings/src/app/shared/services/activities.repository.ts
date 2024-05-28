@@ -60,3 +60,7 @@ export class ActivitiesRepository {
     return this.#http.put<Activity>(url, activity);
   }
 }
+type Result<T> = {
+  data: T;
+  error: string;
+};

@@ -3,7 +3,16 @@ import { Activity, NULL_ACTIVITY } from '@domain/activity.type';
 import { Booking, NULL_BOOKING } from '@domain/booking.type';
 import { ActivitiesRepository } from '@services/activities.repository';
 import { BookingsRepository } from '@services/bookings.repository';
-import { BehaviorSubject, Observable, combineLatest, map, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  combineLatest,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class BookingService {
@@ -19,7 +28,7 @@ export class BookingService {
   activityId$ = new BehaviorSubject<string>('');
   updatedActivity$ = new BehaviorSubject<Activity>(NULL_ACTIVITY);
   newBooking$ = new BehaviorSubject<Booking>(NULL_BOOKING);
-
+  error$ = new BehaviorSubject<string>('');
   // * Observable sources division
 
   getActivity$(): Observable<Activity> {
@@ -43,7 +52,14 @@ export class BookingService {
       tap((_) => this.activityId$.next('')),
       tap((_) => this.updatedActivity$.next(NULL_ACTIVITY)),
       tap((_) => this.newBooking$.next(NULL_BOOKING)),
-      switchMap((slug) => this.#activitiesRepository.getBySlug$(slug)),
+      switchMap((slug) =>
+        this.#activitiesRepository.getBySlug$(slug).pipe(
+          catchError((error) => {
+            this.error$.next(error.message);
+            return of(NULL_ACTIVITY);
+          }),
+        ),
+      ),
     );
   }
 
