@@ -11,15 +11,15 @@ export class BookingStore {
 
   // * Injected services division
 
-  #bookingService: BookingService = inject(BookingService);
+  #service: BookingService = inject(BookingService);
 
   // * Signals division
 
-  activity: Signal<Activity> = toSignal(this.#bookingService.getActivity$(), {
+  activity: Signal<Activity> = toSignal(this.#service.getActivity$(), {
     initialValue: NULL_ACTIVITY,
   });
 
-  bookings: Signal<Booking[]> = toSignal(this.#bookingService.getBookings$(), { initialValue: [] });
+  bookings: Signal<Booking[]> = toSignal(this.#service.getBookings$(), { initialValue: [] });
 
   // * Computed signals division
 
@@ -50,17 +50,21 @@ export class BookingStore {
 
   // ToDo: Could be generalized to a single dispatcher method receiving an action type and payload
 
+  dispatchGetActivityWithBookingsBySlug(slug: string): void {
+    this.#service.slug$.next(slug);
+  }
+
   dispatchPostBooking(activityId: string, participants: number): void {
     const booking: Booking = { activityId, participants, date: new Date(), userId: '0', id: '' };
-    this.#bookingService.newBooking$.next(booking);
+    this.#service.newBooking$.next(booking);
   }
 
   #dispatchGetBookingsByActivityId(activityId: string): void {
-    this.#bookingService.activityId$.next(activityId);
+    this.#service.activityId$.next(activityId);
   }
 
   #dispatchPutNewActivityStatus(activity: Activity, status: ActivityStatus): void {
     const updatedActivity = { ...activity, status };
-    this.#bookingService.updatedActivity$.next(updatedActivity);
+    this.#service.updatedActivity$.next(updatedActivity);
   }
 }

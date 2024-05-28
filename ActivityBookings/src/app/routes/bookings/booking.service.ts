@@ -1,23 +1,21 @@
 import { Injectable, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Activity, NULL_ACTIVITY } from '@domain/activity.type';
 import { Booking, NULL_BOOKING } from '@domain/booking.type';
 import { ActivitiesRepository } from '@services/activities.repository';
 import { BookingsRepository } from '@services/bookings.repository';
-import { BehaviorSubject, Observable, combineLatest, map, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, switchMap, tap } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class BookingService {
   // ! Observable world
 
   // * Injected services division
 
-  #route = inject(ActivatedRoute);
   #activitiesRepository: ActivitiesRepository = inject(ActivitiesRepository);
   #bookingsRepository: BookingsRepository = inject(BookingsRepository);
 
   // * Subject triggers division
-  #slug$ = this.#route.paramMap.pipe(map((params) => params.get('slug') || ''));
+  slug$ = new BehaviorSubject<string>('');
   activityId$ = new BehaviorSubject<string>('');
   updatedActivity$ = new BehaviorSubject<Activity>(NULL_ACTIVITY);
   newBooking$ = new BehaviorSubject<Booking>(NULL_BOOKING);
@@ -41,7 +39,12 @@ export class BookingService {
   // * Private methods division
 
   #getActivityBySlug$(): Observable<Activity> {
-    return this.#slug$.pipe(switchMap((slug) => this.#activitiesRepository.getBySlug$(slug)));
+    return this.slug$.pipe(
+      tap((_) => this.activityId$.next('')),
+      tap((_) => this.updatedActivity$.next(NULL_ACTIVITY)),
+      tap((_) => this.newBooking$.next(NULL_BOOKING)),
+      switchMap((slug) => this.#activitiesRepository.getBySlug$(slug)),
+    );
   }
 
   #putActivity$(): Observable<Activity> {

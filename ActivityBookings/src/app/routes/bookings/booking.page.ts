@@ -1,8 +1,17 @@
 import { JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  InputSignal,
+  Signal,
+  computed,
+  effect,
+  inject,
+  input,
+  untracked,
+} from '@angular/core';
 import { Activity, ActivityStatus } from '@domain/activity.type';
 import { ActivityDetailsComponent } from './activity-details.component';
-import { BookingService } from './booking.service';
 import { BookingStore } from './booking.store';
 import { NewBookingComponent } from './new-booking.component';
 
@@ -10,7 +19,7 @@ import { NewBookingComponent } from './new-booking.component';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [JsonPipe, ActivityDetailsComponent, NewBookingComponent],
-  providers: [BookingStore, BookingService],
+  providers: [BookingStore],
   template: `
     <lab-activity-details [activity]="activity()" />
     <pre>{{ bookings() | json }}</pre>
@@ -31,6 +40,8 @@ export default class BookingPage {
 
   // * Signals division
 
+  slug: InputSignal<string> = input<string>('');
+
   activity: Signal<Activity> = this.#store.activity;
 
   activityStatus: Signal<ActivityStatus> = this.#store.nextActivityStatus;
@@ -40,6 +51,13 @@ export default class BookingPage {
   bookings: Signal<string[]> = computed(() =>
     this.#store.bookings().map((booking) => `${booking.participants} booked on ${booking.date}`),
   );
+
+  // * Effects division
+
+  readonly #onSlugUpdatedEffect = effect(() => {
+    const slug = this.slug();
+    untracked(() => this.#store.dispatchGetActivityWithBookingsBySlug(slug));
+  });
 
   // * Event handlers division
 
