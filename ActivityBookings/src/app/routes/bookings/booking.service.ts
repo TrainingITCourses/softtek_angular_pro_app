@@ -9,6 +9,7 @@ import {
   catchError,
   combineLatest,
   map,
+  merge,
   of,
   switchMap,
   tap,
@@ -32,10 +33,7 @@ export class BookingService {
   // * Observable sources division
 
   getActivity$(): Observable<Activity> {
-    return combineLatest<[Activity, Activity]>([
-      this.#getActivityBySlug$(),
-      this.#putActivity$(),
-    ]).pipe(map(this.#toCombinedActivity));
+    return merge(this.#getActivityBySlug$(), this.#putActivity$());
   }
 
   getBookings$(): Observable<Booking[]> {
@@ -82,13 +80,6 @@ export class BookingService {
   }
 
   // * Mappers division
-
-  #toCombinedActivity = (combinedActivities: Activity[]): Activity => {
-    const initialActivity = combinedActivities[0];
-    const updatedActivity = combinedActivities[1];
-    if (updatedActivity.id === NULL_ACTIVITY.id) return initialActivity;
-    return updatedActivity;
-  };
 
   #toCombinedBookings = (combinedBookings: [Booking[], Booking]): Booking[] => {
     const initialBookings = combinedBookings[0];
