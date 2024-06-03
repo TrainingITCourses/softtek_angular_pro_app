@@ -6,7 +6,7 @@
     "chrome": "start chrome -incognito -auto-open-devtools-for-tabs http://localhost:4200",
     "start": "npm run chrome && ng serve",
     "start:PWA": "npm run build && http-server -p 8080 -c-1 dist/activity-bookings/browser",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:ActivityBookings": "node dist/activity-bookings/server/server.mjs"

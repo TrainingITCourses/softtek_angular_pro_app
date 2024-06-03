@@ -20,13 +20,22 @@
   ],
   "dataGroups": [
     {
-      "name": "api-call",
+      "name": "cache-first",
       "urls": ["http://localhost:3000/api/activities"],
       "cacheConfig": {
-        "maxAge": "12h",
+        "maxAge": "10m",
         "maxSize": 10,
-        "strategy": "performance",
-        "timeout": "5s"
+        "strategy": "performance"
+      }
+    },
+    {
+      "name": "api-first",
+      "urls": ["http://localhost:3000/api/bookings/*"],
+      "cacheConfig": {
+        "maxAge": "1m",
+        "maxSize": 10,
+        "strategy": "freshness",
+        "timeout": "1s"
       }
     }
   ]
