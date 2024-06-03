@@ -30,10 +30,6 @@ export default class HomePage {
   /** List of activities */
   activities: Signal<Activity[]> = this.#service.activities;
 
-  // constructor() {
-  //   this.#service.dispatchProductSearchByTerm('');
-  // }
-
   // * event handlers division
 
   /** when the user search for something, set it on the store */

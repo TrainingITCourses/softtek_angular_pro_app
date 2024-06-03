@@ -16,19 +16,33 @@ export class HomeService {
   /** The repository used to get activities data from the API*/
   #activitiesRepository: ActivitiesRepository = inject(ActivitiesRepository);
 
-  #searchTerm$ = new BehaviorSubject<string>('');
+  // * Private subject triggers division
+
+  /**
+   * Subject to trigger the search term change
+   */
+  #searchTerm$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
   // * Public signals division
 
-  // activities: Signal<Activity[]> = toSignal(this.#activitiesRepository.getActivities$(), {
-  //   initialValue: [],
-  // });
-
-  /** List of activities */
+  /**
+   * List of activities
+   * - Run when the search term changes
+   * - Uses the `ActivitiesRepository` to get the activities data
+   * - Interop with the Observable world
+   * @returns Signal of Activity[]
+   * */
   activities: Signal<Activity[]> = toSignal(
     this.#searchTerm$.pipe(switchMap((term) => this.#activitiesRepository.getByQuery$(term))),
     { initialValue: [] },
   );
 
+  // * Dispatchers division
+
+  /**
+   * Dispatches the search term to the repository
+   * @param term The search term to dispatch
+   */
   dispatchProductSearchByTerm(term: string) {
     this.#searchTerm$.next(term);
   }

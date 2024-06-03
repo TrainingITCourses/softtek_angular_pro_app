@@ -13,13 +13,13 @@ export class BookingStore {
 
   #service: BookingService = inject(BookingService);
 
-  // * Signals division
+  // * Interop Signals division
+  // populated by service observables
+  // fully reactive, no need to unsubscribe
 
   error: Signal<string> = toSignal(this.#service.error$, { initialValue: '' });
 
-  activity: Signal<Activity> = toSignal(this.#service.getActivity$(), {
-    initialValue: NULL_ACTIVITY,
-  });
+  activity: Signal<Activity> = toSignal(this.#service.getActivity$(), { initialValue: NULL_ACTIVITY });
 
   bookings: Signal<Booking[]> = toSignal(this.#service.getBookings$(), { initialValue: [] });
 
@@ -33,6 +33,10 @@ export class BookingStore {
 
   // * Effects division
 
+  /**
+   * Effect to run when activityId changes.
+   * Dispatches command to get bookings by activityId.
+   */
   readonly #onActivityIdUpdatedEffect = effect(() => {
     const activityId = this.#activityId();
     if (activityId !== '') {
@@ -40,6 +44,10 @@ export class BookingStore {
     }
   });
 
+  /**
+   * Effect to run when activity or activityStatus changes.
+   * Dispatches command to update activity status if needed..
+   */
   readonly #onActivityStatusUpdatedEffect = effect(() => {
     const activity = this.activity();
     const nextStatus = this.nextActivityStatus();
@@ -49,8 +57,9 @@ export class BookingStore {
   });
 
   // * Dispatchers division
-
-  // ToDo: Could be generalized to a single dispatcher method receiving an action type and payload
+  // Updates subjects to trigger service commands
+  // Can be renamed without dispatch prefix
+  // Can be generalized in one single dispatcher that accepts a command type and a payload
 
   dispatchGetActivityWithBookingsBySlug(slug: string): void {
     this.#service.slug$.next(slug);

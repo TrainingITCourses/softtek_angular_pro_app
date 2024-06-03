@@ -25,6 +25,13 @@ npm install @picocss/pico
 # from linux/git terminal
 ng config projects.ActivityBookings.architect.build.options.styles [\"node_modules/@picocss/pico/css/pico.min.css\",\"src/styles.css\"]
 
+
+# Eslint - Prettier
+npm install eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
+npm install prettier eslint-config-prettier eslint-plugin-prettier --save-dev
+
+
+
 # Header widget
 ng g c core/header --type=widget
 
