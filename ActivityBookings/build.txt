@@ -1,0 +1,109 @@
+Browser bundles
+Initial chunk files     | Names               |  Raw size
+styles.css              | styles              |  88.52 kB |
+polyfills.js            | polyfills           |  86.03 kB |
+main.js                 | main                |   3.61 kB |
+chunk-A3GRHJ3G.js       | -                   |   1.94 kB |
+
+                        | Initial total       | 180.11 kB
+
+Lazy chunk files        | Names               |  Raw size
+chunk-GWBGR25B.js       | booking-page        |  24.81 kB |
+chunk-AEFC4YKL.js       | home-page           |  13.17 kB |
+chunk-VRHPXKTP.js       | -                   |   4.27 kB |
+
+
+Server bundles
+Initial chunk files     | Names               |  Raw size
+chunk-RD2RPLCX.mjs      | -                   |   1.02 MB |
+chunk-AL3TQOC4.mjs      | -                   | 663.96 kB |
+polyfills.server.mjs    | polyfills.server    | 557.44 kB |
+chunk-7IMPPIZR.mjs      | -                   | 194.15 kB |
+chunk-Y4GMZGST.mjs      | -                   |  53.28 kB |
+main.server.mjs         | main.server         |   3.79 kB |
+chunk-3ZCMJ6LT.mjs      | -                   |   3.36 kB |
+render-utils.server.mjs | render-utils.server | 493 bytes |
+chunk-DRT7FYXN.mjs      | -                   | 275 bytes |
+
+Lazy chunk files        | Names               |  Raw size
+chunk-ZR7GYQDV.mjs      | xhr2                |  39.10 kB |
+chunk-JEYO6ZPK.mjs      | booking-page        |  23.42 kB |
+chunk-NWNVLFUL.mjs      | home-page           |  12.09 kB |
+chunk-VTA7ZEGO.mjs      | -                   |   7.43 kB |
+
+Application bundle generation complete. [3.073 seconds]
+
+
+DEFER
+
+Initial chunk files     | Names                   |  Raw size
+styles.css              | styles                  |  88.52 kB |
+polyfills.js            | polyfills               |  86.03 kB |
+main.js                 | main                    |   3.61 kB |
+chunk-A3GRHJ3G.js       | -                       |   1.94 kB |
+
+                        | Initial total           | 180.11 kB
+
+Lazy chunk files        | Names                   |  Raw size
+chunk-UY3YBI2V.js       | booking-page            |  24.85 kB |
+chunk-AUPBURYR.js       | activity-list-component |   7.28 kB |
+chunk-2CVFN2NZ.js       | home-page               |   6.33 kB |
+chunk-5KPUNTP6.js       | -                       |   2.41 kB |
+chunk-BBCLGDNF.js       | -                       |   1.91 kB |
+
+
+Server bundles
+Initial chunk files     | Names                   |  Raw size
+chunk-AQNXJG7W.mjs      | -                       |   1.02 MB |
+chunk-GVZGHWWX.mjs      | -                       | 663.96 kB |
+polyfills.server.mjs    | polyfills.server        | 557.44 kB |
+chunk-F524VULI.mjs      | -                       | 194.15 kB |
+chunk-XQPB63EA.mjs      | -                       |  53.28 kB |
+main.server.mjs         | main.server             |   3.79 kB |
+chunk-3ZCMJ6LT.mjs      | -                       |   3.36 kB |
+render-utils.server.mjs | render-utils.server     | 493 bytes |
+chunk-DRT7FYXN.mjs      | -                       | 275 bytes |
+
+Lazy chunk files        | Names                   |  Raw size
+chunk-ZR7GYQDV.mjs      | xhr2                    |  39.10 kB |
+chunk-OUEKU4YV.mjs      | booking-page            |  23.46 kB |
+chunk-NYND4376.mjs      | activity-list-component |   6.79 kB |
+chunk-B4WTU6QE.mjs      | home-page               |   6.13 kB |
+chunk-W7WHRRYB.mjs      | -                       |   5.55 kB |
+chunk-DER4VWTW.mjs      | -                       |   2.02 kB |
+
+Application bundle generation complete. [3.006 seconds]
+
+
+
+
+Bookings Page standard
+
+
+When has booking form
+
+4 requests
+964 B transferred
+82.7 kB resources
+
+
+When no need to booking form
+
+4 requests
+967 B transferred
+82.7 kB resources
+
+
+Bookings Page with defer
+
+When has booking form
+
+5 requests
+1.1 kB transferred
+83.2 kB resources
+
+When no need to booking form
+
+4 requests
+967 B transferred
+75.1 kB resources

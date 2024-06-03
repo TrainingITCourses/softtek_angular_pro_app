@@ -17,7 +17,9 @@ import { SearchBarComponent } from './search-bar.component';
   template: `
     <h1>Activities</h1>
     <lab-search-bar [placeholder]="'Search activities...'" (search)="onSearch($event)" />
-    <lab-activity-list [activities]="activities()" />
+    @defer {
+      <lab-activity-list [activities]="activities()" />
+    }
   `,
 })
 export default class HomePage {

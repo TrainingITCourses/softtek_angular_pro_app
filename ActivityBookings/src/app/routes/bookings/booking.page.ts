@@ -35,8 +35,10 @@ import { PlacesComponent } from './places.component';
     <lab-activity-details [activity]="activity()" />
     <lab-bookings-list [bookings]="bookings()" />
     <lab-places [activity]="activity()" [bookedPlaces]="bookedPlaces()" />
-    @if (isBookable()) {
-      <lab-new-booking [activity]="activity()" [bookedPlaces]="bookedPlaces()" (book)="onBookNow($event)" />
+    @defer {
+      @if (isBookable()) {
+        <lab-new-booking [activity]="activity()" [bookedPlaces]="bookedPlaces()" (book)="onBookNow($event)" />
+      }
     }
   `,
 })
