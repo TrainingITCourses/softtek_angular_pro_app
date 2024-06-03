@@ -15,5 +15,3 @@ export const routes: Routes = [
     loadComponent: () => import('./routes/bookings/booking.page'),
   },
 ];
-
-// resolve: { activity: activityResolver },
