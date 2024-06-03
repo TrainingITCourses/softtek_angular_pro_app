@@ -76,3 +76,13 @@ ng g c routes/bookings/new-booking
 ng g c shared/ui/activity-status
 ng g c routes/bookings/activity-details
 ```
+
+PWA
+
+```bash
+ng add @angular/pwa
+npm i http-server --save-dev
+npm run build
+# "start:PWA": "npm run build && http-server -p 8080 -c-1 dist/activity-bookings/browser"
+http-server -p 8080 -c-1 dist/activity-bookings/browser
+```

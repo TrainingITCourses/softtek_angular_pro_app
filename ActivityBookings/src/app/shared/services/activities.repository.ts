@@ -44,12 +44,11 @@ export class ActivitiesRepository {
   getBySlug$(slug: string): Observable<Activity> {
     if (slug === '') return of(NULL_ACTIVITY);
     const url = `${this.#apiUrl}/?key=slug&value=${slug}`;
-    return this.#http
-      .get<Activity[]>(url)
-      .pipe(map((activities) => activities[0] || NULL_ACTIVITY));
+    return this.#http.get<Activity[]>(url).pipe(map((activities) => activities[0] || NULL_ACTIVITY));
   }
 
   getByQuery$(query: string): Observable<Activity[]> {
+    if (query === '') return this.getActivities$();
     const url = `${this.#apiUrl}/?q=${query}`;
     return this.#http.get<Activity[]>(url);
   }
