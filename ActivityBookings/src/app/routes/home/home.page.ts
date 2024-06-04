@@ -17,13 +17,14 @@ import { SearchBarComponent } from './search-bar.component';
   template: `
     <h1>Activities</h1>
     <lab-search-bar [placeholder]="'Search activities...'" (search)="onSearch($event)" />
-    @defer (when activities().length>0) {
+    <lab-activity-list [activities]="activities()" />
+    <!-- @defer (when activities().length>0) {
       <lab-activity-list [activities]="activities()" />
     } @placeholder {
       <cite> ⌛ Waiting for activities data</cite>
     } @loading (minimum 1s) {
       <cite> ⌛ Waiting for component instructions</cite>
-    }
+    } -->
   `,
 })
 export default class HomePage {

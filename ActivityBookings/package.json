@@ -6,9 +6,11 @@
     "chrome:dev": "start chrome -incognito -auto-open-devtools-for-tabs http://localhost:4200",
     "chrome:pwa": "start chrome -incognito -auto-open-devtools-for-tabs http://localhost:8080",
     "chrome:ssr": "start chrome -incognito -auto-open-devtools-for-tabs http://localhost:4000",
-    "start": "npm run chrome:dev && ng serve",
+    "chrome:ssg": "start chrome -incognito -auto-open-devtools-for-tabs http://localhost:4200",
+    "start": "npm run chrome:dev && ng serve ",
     "start:pwa": "npm run build && npm run chrome:pwa && http-server -p 8080 -c-1 dist/activity-bookings/browser",
     "start:ssr": "npm run build && npm run chrome:ssr && node dist/activity-bookings/server/server.mjs",
+    "start:ssg": "npm run build && npm run chrome:ssg && http-server -p 8080 -c-1 dist/activity-bookings/browser",
     "build": "ng build --configuration production",
     "watch": "ng build --configuration development --watch",
     "test": "ng test"
