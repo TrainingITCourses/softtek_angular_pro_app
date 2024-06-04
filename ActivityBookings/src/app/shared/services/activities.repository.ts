@@ -30,9 +30,9 @@ export class ActivitiesRepository {
    * @returns An observable with the activities
    */
   getActivities$(): Observable<Activity[]> {
-    const url = this.#apiUrl;
+    // const url = this.#apiUrl;
     // const url = `${this.#apiUrl}/?status=404`;
-    // const url = `${this.#apiUrl}/?delay=5000`;
+    const url = `${this.#apiUrl}/?delay=5000`;
     return this.#http.get<Activity[]>(url);
   }
 

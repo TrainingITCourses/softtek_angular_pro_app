@@ -17,8 +17,12 @@ import { SearchBarComponent } from './search-bar.component';
   template: `
     <h1>Activities</h1>
     <lab-search-bar [placeholder]="'Search activities...'" (search)="onSearch($event)" />
-    @defer {
+    @defer (when activities().length>0) {
       <lab-activity-list [activities]="activities()" />
+    } @placeholder {
+      <cite> ⌛ Waiting for activities</cite>
+    } @loading (minimum 2s) {
+      <h2>The data is coming...</h2>
     }
   `,
 })
