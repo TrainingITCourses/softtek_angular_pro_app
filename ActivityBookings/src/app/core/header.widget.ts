@@ -18,17 +18,18 @@ import { environment } from '@env/environment';
         </ul>
         <ul>
           <li>
-            <a [routerLink]="['/']">To do...</a>
+            <a [routerLink]="['/about']">About us</a>
           </li>
         </ul>
       </nav>
     </header>
   `,
   styles: `
-   .title {
+    .title {
       font-size: 1.2rem;
       font-weight: bold;
-    }`,
+    }
+  `,
 })
 export class HeaderWidget {
   // * Properties division

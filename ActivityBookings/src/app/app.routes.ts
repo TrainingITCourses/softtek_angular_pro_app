@@ -14,4 +14,8 @@ export const routes: Routes = [
     path: 'bookings/:slug',
     loadComponent: () => import('./routes/bookings/booking.page'),
   },
+  {
+    path: 'about',
+    loadComponent: () => import('./routes/about/about.page'),
+  },
 ];
