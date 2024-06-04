@@ -86,3 +86,41 @@ npm run build
 # "start:PWA": "npm run build && http-server -p 8080 -c-1 dist/activity-bookings/browser"
 http-server -p 8080 -c-1 dist/activity-bookings/browser
 ```
+
+TESTING
+
+Remove Karma and Jasmine
+
+```bash
+npm uninstall karma karma-chrome-launcher karma-coverage karma-jasmine karma-jasmine-html-reporter jasmine-core @types/jasmine
+```
+
+Install Jest
+
+```bash
+npm i -D jest @types/jest
+npm i -D @angular-builders/jest@next
+```
+
+Setup Jest
+
+`setup-jest.ts`
+
+```typescript
+import "jest-preset-angular";
+```
+
+`package.json`
+
+```json
+"jest": {
+    "preset": "jest-preset-angular",
+    "setupTestFrameworkScriptFile": "<rootDir>/setup-jest.ts"
+  }
+```
+
+Angular builders test
+
+```bash
+npm i @angular-builders/jest
+```
