@@ -37,6 +37,10 @@ import { PlacesComponent } from './places.component';
     <lab-places [activity]="activity()" [bookedPlaces]="bookedPlaces()" />
     @defer (when isBookable()) {
       <lab-new-booking [activity]="activity()" [bookedPlaces]="bookedPlaces()" (book)="onBookNow($event)" />
+    } @placeholder {
+      <cite> 🕳️ No bookings available</cite>
+    } @loading (minimum 1s) {
+      <cite> ⌛ Waiting for component instructions</cite>
     }
   `,
 })

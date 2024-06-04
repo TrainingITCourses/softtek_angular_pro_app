@@ -20,9 +20,9 @@ import { SearchBarComponent } from './search-bar.component';
     @defer (when activities().length>0) {
       <lab-activity-list [activities]="activities()" />
     } @placeholder {
-      <cite> ⌛ Waiting for activities</cite>
-    } @loading (minimum 2s) {
-      <h2>The data is coming...</h2>
+      <cite> ⌛ Waiting for activities data</cite>
+    } @loading (minimum 1s) {
+      <cite> ⌛ Waiting for component instructions</cite>
     }
   `,
 })
