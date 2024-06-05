@@ -4,16 +4,29 @@ import { SwUpdate, VersionEvent, VersionReadyEvent } from '@angular/service-work
 import { PlatformService } from '@services/platform.service';
 import { Observable, filter, map, of, tap } from 'rxjs';
 
+/**
+ * Service to check for updates and update the app.
+ */
 @Injectable({ providedIn: 'root' })
 export class UpdateService {
+  // * Private injection division
+
+  /** Angular PWA service that runs in a parallel thread and checks for update */
   #swUpdate: SwUpdate = inject(SwUpdate);
   #platformService: PlatformService = inject(PlatformService);
 
+  // * Public signal division
+
+  /** Signal that emits when a new version is ready to be installed */
   versionReady: Signal<VersionReadyEvent | null> = toSignal(this.#getAppUpdates$(), { initialValue: null });
+
+  constructor() {
+    if (this.#platformService.isBrowser) this.#checkForUpdates();
+  }
 
   #getAppUpdates$(): Observable<VersionReadyEvent | null> {
     if (this.#platformService.isServer) return of(null);
-    setInterval(() => this.#checkForUpdates(), 60 * 1000);
+    // Observable pipe to listen for version updates
     return this.#swUpdate.versionUpdates.pipe(
       tap((event: VersionEvent) => console.log('☁️ Version event ' + new Date(), event)),
       filter((event: VersionEvent) => event.type === 'VERSION_READY'),
@@ -22,12 +35,17 @@ export class UpdateService {
     );
   }
 
+  // * Public methods division
+
+  /** Update the app with the new version by reloading the browser after verfy it was downloaded */
   updateApp() {
-    this.#swUpdate.activateUpdate().then(() => document.location.reload());
+    document.location.reload();
   }
 
   #checkForUpdates() {
-    console.log('⌛ Checking for updates ' + new Date());
-    this.#swUpdate.checkForUpdate();
+    setInterval(() => {
+      console.log('⌛ Checking for updates ' + new Date());
+      this.#swUpdate.checkForUpdate();
+    }, 60 * 1000);
   }
 }

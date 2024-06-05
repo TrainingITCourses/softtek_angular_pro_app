@@ -16,6 +16,7 @@ import { BookingStore } from './booking.store';
 import BookingsListComponent from './bookings-list.component';
 import { NewBookingComponent } from './new-booking.component';
 import { PlacesComponent } from './places.component';
+
 /**
  * Booking page component routed to /bookings/:slug
  * Imports:

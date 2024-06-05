@@ -1,27 +1,25 @@
-import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
 import { VersionReadyEvent } from '@angular/service-worker';
 import { UpdateService } from './update.service';
-
+/**
+ * Dialog component to show a message when a new version is available.
+ */
 @Component({
   selector: 'lab-update-dialog',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [JsonPipe],
   template: `
     <dialog [open]="open()">
       <article>
         <header>
           <button aria-label="Close" rel="prev" (click)="onCloseClick()"></button>
-          <p>
-            <strong>🚀 There are a new version</strong>
-          </p>
+          <h2>🚀 There are a new version</h2>
         </header>
         <main>
-          <p>An update is available, do you want to install it?</p>
           <p>{{ currentVersion() }} ⏩ {{ latestVersion() }}</p>
           <p>{{ latestVersionDescription() }}</p>
           <p>Release date: {{ latestVersionDate() }}</p>
+          <p>Do you want to install it?</p>
         </main>
         <footer>
           <button className="secondary" (click)="onCloseClick()">Cancel</button>
@@ -30,24 +28,35 @@ import { UpdateService } from './update.service';
       </article>
     </dialog>
   `,
-  styles: [],
 })
 export class UpdateDialog {
+  // * Injected services division
+
   #updateService: UpdateService = inject(UpdateService);
-  versionReady: Signal<VersionReadyEvent | null> = this.#updateService.versionReady;
-  #hasUpdates: Signal<boolean> = computed(() => this.versionReady() !== null);
+
+  // * Signals division
+
+  #versionReady: Signal<VersionReadyEvent | null> = this.#updateService.versionReady;
   #closedByUser: WritableSignal<boolean> = signal(false);
+
+  // * Computed signals division
+
+  #hasUpdates: Signal<boolean> = computed(() => this.#versionReady() !== null);
+  #current: Signal<any> = computed(() => this.#versionReady()?.currentVersion.appData || {});
+  #latest: Signal<any> = computed(() => this.#versionReady()?.latestVersion.appData || {});
   open: Signal<boolean> = computed(() => this.#hasUpdates() && !this.#closedByUser());
-  #current: Signal<any> = computed(() => this.versionReady()?.currentVersion.appData || {});
   currentVersion: Signal<string> = computed(() => this.#current().version || 'No current version number known');
-  #latest: Signal<any> = computed(() => this.versionReady()?.latestVersion.appData || {});
   latestVersion: Signal<string> = computed(() => this.#latest().version || 'No new version number known');
   latestVersionDescription: Signal<string> = computed(() => this.#latest().description || 'No description available');
   latestVersionDate: Signal<string> = computed(() => this.#latest().date || 'No date available');
-  onCloseClick() {
+
+  // * Event handlers division
+
+  onCloseClick(): void {
     this.#closedByUser.set(true);
   }
-  onUpdateAppClick() {
+
+  onUpdateAppClick(): void {
     this.#updateService.updateApp();
   }
 }

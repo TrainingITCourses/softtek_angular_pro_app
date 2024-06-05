@@ -1,6 +1,6 @@
 {
   "name": "activity-bookings",
-  "version": "0.0.0",
+  "version": "18.2.3",
   "scripts": {
     "ng": "ng",
     "chrome:dev": "start chrome -incognito -auto-open-devtools-for-tabs http://localhost:4200",
