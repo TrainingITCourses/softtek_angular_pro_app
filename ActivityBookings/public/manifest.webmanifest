@@ -1,6 +1,7 @@
 {
   "name": "ActivityBookings",
-  "short_name": "ActivityBookings",
+  "short_name": "ActiBook",
+  "description": "Activity Bookings App",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, Signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, computed, inject } from '@angular/core';
 import { Activity } from '@domain/activity.type';
+import { PlatformService } from '@services/platform.service';
 import { ActivityListComponent } from './activity-list.component';
 import { HomeService } from './home.service';
 import { SearchBarComponent } from './search-bar.component';
@@ -17,25 +18,26 @@ import { SearchBarComponent } from './search-bar.component';
   template: `
     <h1>Activities</h1>
     <lab-search-bar [placeholder]="'Search activities...'" (search)="onSearch($event)" />
-    <lab-activity-list [activities]="activities()" />
-    <!-- @defer (when activities().length>0) {
+    @defer (when mustLoad()) {
       <lab-activity-list [activities]="activities()" />
     } @placeholder {
       <cite> ⌛ Waiting for activities data</cite>
     } @loading (minimum 1s) {
       <cite> ⌛ Waiting for component instructions</cite>
-    } -->
+    }
   `,
 })
 export default class HomePage {
   // * Injected services division
 
   #service: HomeService = inject(HomeService);
+  #platformService: PlatformService = inject(PlatformService);
 
   // * Public signal division
 
   /** List of activities */
   activities: Signal<Activity[]> = this.#service.activities;
+  mustLoad: Signal<boolean> = computed(() => this.#platformService.isServer || this.activities().length >= 0);
 
   // * event handlers division
 

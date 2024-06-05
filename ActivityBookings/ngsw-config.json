@@ -1,6 +1,11 @@
 {
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
+  "appData": {
+    "version": "1.2.2",
+    "description": "Bug fixes and performance improvements.✅ Defer Must load fixed",
+    "date": "2024-06-05"
+  },
   "assetGroups": [
     {
       "name": "app",
