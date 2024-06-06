@@ -2,9 +2,9 @@
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
   "appData": {
-    "version": "18.2.3",
-    "description": "Bug fixes and performance improvements.✅ My new feature",
-    "date": "2024-06-05"
+    "version": "18.3.8",
+    "description": "Bug fixes and performance improvements.✅ No log",
+    "date": "2024-06-06"
   },
   "assetGroups": [
     {

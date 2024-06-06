@@ -13,6 +13,7 @@ export class UpdateService {
 
   /** Angular PWA service that runs in a parallel thread and checks for update */
   #swUpdate: SwUpdate = inject(SwUpdate);
+
   #platformService: PlatformService = inject(PlatformService);
 
   // * Public signal division
@@ -43,9 +44,10 @@ export class UpdateService {
   }
 
   #checkForUpdates() {
+    // console.log('✅ Schedule checks every minute!');
     setInterval(() => {
       console.log('⌛ Checking for updates ' + new Date());
-      this.#swUpdate.checkForUpdate();
+      this.#swUpdate.checkForUpdate().then(() => console.log('✅ Check completed'));
     }, 60 * 1000);
   }
 }
