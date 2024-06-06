@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { LoggerService } from '@services/logger.service';
 import { PlatformService } from '@services/platform.service';
 import { HeaderWidget } from './core/header.widget';
 import { UpdateDialog } from './core/update.dialog';
@@ -31,4 +32,8 @@ export class AppComponent {
 
   /** Flag to show or execute only whe running on browser */
   isBrowser: boolean = this.#platformService.isBrowser;
+
+  constructor(loggerService: LoggerService) {
+    loggerService.log('Application started', 'INFO');
+  }
 }
