@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@env/environment';
 
+/**
+ * The different levels of logging.
+ */
 export type LogLevel = 'DEBUG' | 'INFO' | 'ERROR';
 
+/**
+ * Service to log messages with different levels.
+ * @description The service is provided in the root injector.
+ */
 @Injectable({
   providedIn: 'root',
 })
