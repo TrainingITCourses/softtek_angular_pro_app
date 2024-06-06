@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component, Signal, WritableSignal, computed, inject, signal } from '@angular/core';
 import { VersionReadyEvent } from '@angular/service-worker';
 import { UpdateService } from './update.service';
+
 /**
- * Dialog component to show a message when a new version is available.
+ * Dialog component to ask user to update the app when a new version is available.
+ * @requires UpdateService to check for updates and update the app.
  */
 @Component({
   selector: 'lab-update-dialog',

@@ -5,6 +5,11 @@ import { ActivitiesRepository } from '@services/activities.repository';
 import { BookingsRepository } from '@services/bookings.repository';
 import { BehaviorSubject, Observable, catchError, combineLatest, map, merge, of, switchMap, tap } from 'rxjs';
 
+/**
+ * Service to manage the bookings in the app.
+ * @requires ActivitiesRepository to get the activities data.
+ * @requires BookingsRepository to get the bookings data.
+ */
 @Injectable({ providedIn: 'root' })
 export class BookingService {
   // ! Observable world

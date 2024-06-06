@@ -6,9 +6,10 @@ import { UpdateDialog } from './core/update.dialog';
 
 /**
  * _Root_ component of the application with the main layout.
- * - Contains the header, the main content and the footer.
- * - Uses the `router-outlet` to display the different pages.
- * - When running on the browser, shows a dialog to update the app when a new version is available.
+ * @requires HeaderWidget to display the main navigation.
+ * @requires RouterOutlet to display the different pages.
+ * @requires UpdateDialog to ask the user to update the app when a new version is available.
+ * @requires PlatformService to determine if the app is running on the server or the browser
  */
 @Component({
   selector: 'lab-root',

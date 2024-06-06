@@ -1,15 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  InputSignal,
-  Signal,
-  computed,
-  inject,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, InputSignal, Signal, computed, input } from '@angular/core';
 import { Activity } from '@domain/activity.type';
-import { BookingStore } from './booking.store';
 
+/**
+ * Presentation component for displaying the number of booked and remaining places.
+ */
 @Component({
   selector: 'lab-places',
   standalone: true,
@@ -28,19 +22,15 @@ import { BookingStore } from './booking.store';
 export class PlacesComponent {
   // ! Signal world
 
-  // * Injected services division
-
-  #store = inject(BookingStore);
-
   // * Input Signals division
 
+  /** The activity to display the places for */
   activity: InputSignal<Activity> = input.required<Activity>();
 
+  /** The number of already booked places */
   bookedPlaces: InputSignal<number> = input<number>(0);
 
   // * Computed signals division
 
-  remainingPlaces: Signal<number> = computed(
-    () => this.activity().maxParticipants - this.bookedPlaces(),
-  );
+  remainingPlaces: Signal<number> = computed(() => this.activity().maxParticipants - this.bookedPlaces());
 }

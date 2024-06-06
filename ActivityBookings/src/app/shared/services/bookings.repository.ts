@@ -4,6 +4,12 @@ import { Booking, NULL_BOOKING } from '@domain/booking.type';
 import { environment } from '@env/environment';
 import { Observable, of } from 'rxjs';
 
+/**
+ * Repository to manage the bookings in the app.
+ * - Provides the bookings data from the API.
+ * - Provided in the root injector.
+ * @requires HttpClient to make requests to the API
+ */
 @Injectable({ providedIn: 'root' })
 export class BookingsRepository {
   // * Private properties division

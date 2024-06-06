@@ -6,6 +6,8 @@ import { Observable, filter, map, of, tap } from 'rxjs';
 
 /**
  * Service to check for updates and update the app.
+ * @requires SwUpdate to check for updates and update the app.
+ * @requires PlatformService to determine if the app is running on the server or the browser
  */
 @Injectable({ providedIn: 'root' })
 export class UpdateService {

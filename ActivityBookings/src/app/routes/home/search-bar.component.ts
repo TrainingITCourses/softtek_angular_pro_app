@@ -2,14 +2,16 @@ import { ChangeDetectionStrategy, Component, InputSignal, OutputRef, input } fro
 import { outputFromObservable } from '@angular/core/rxjs-interop';
 import { Subject, debounceTime, distinctUntilChanged, filter } from 'rxjs';
 
+/**
+ * Presentation component for a search bar.
+ * @description Displays a search input field.
+ * @returns Emits the search term when the user types in the search input.
+ */
 @Component({
   selector: 'lab-search-bar',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
-  template: `
-    <input type="search" [placeholder]="placeholder()" (input)="onSearchInput($event)" />
-  `,
+  template: ` <input type="search" [placeholder]="placeholder()" (input)="onSearchInput($event)" /> `,
 })
 export class SearchBarComponent {
   // * inputs division
@@ -19,10 +21,11 @@ export class SearchBarComponent {
    */
   placeholder: InputSignal<string> = input('Search...');
 
-  // * outputs division
-
   /** Subject observable for the search term*/
   #search$ = new Subject<string>();
+
+  // * outputs division
+
   /**
    * Emits the search term when the user types in the search input.
    */
@@ -33,6 +36,9 @@ export class SearchBarComponent {
       distinctUntilChanged(),
     ),
   );
+
+  // * event handlers division
+
   /** search input event handler */
   onSearchInput(event: Event) {
     const value = (event.target as HTMLInputElement).value;

@@ -6,8 +6,9 @@ import { SearchBarComponent } from './search-bar.component';
 
 /**
  * Routed component for the Home page.
- * - Imports the `ActivityListComponent` as a presentation component.
- * - Provides the `HomeService` as a facade to get the data access.
+ * @requires HomeService to manage the state
+ * @requires ActivityListComponent to display the activities
+ * @requires SearchBarComponent to search activities
  */
 @Component({
   standalone: true,

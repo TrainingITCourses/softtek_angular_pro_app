@@ -12,11 +12,15 @@ import {
 } from '@angular/core';
 import { Activity } from '@domain/activity.type';
 
+/**
+ * Presentation component for creating a new booking.
+ * @description Allows the user to input the number of participants and book the activity.
+ * @returns The number of participants to book.
+ */
 @Component({
   selector: 'lab-new-booking',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
   template: `
     <section class="grid">
       <label>Participants:</label>
@@ -28,10 +32,9 @@ import { Activity } from '@domain/activity.type';
         max="{{ maxParticipants() }}"
         [value]="participants()"
         (change)="onParticipantChange($event)" />
-      <button [disabled]="!canBook()" (click)="onBook()">Book</button>
+      <button [disabled]="!canBook()" (click)="onBookClick()">Book</button>
     </section>
   `,
-  styles: ``,
 })
 export class NewBookingComponent {
   // ! Signal world
@@ -56,13 +59,13 @@ export class NewBookingComponent {
 
   // * Event handlers division
 
-  onParticipantChange(event: Event) {
+  onParticipantChange(event: Event): void {
     const target = event.target as HTMLInputElement;
     const value = parseInt(target.value, 10);
     this.participants.set(value);
   }
 
-  onBook() {
+  onBookClick(): void {
     this.book.emit(this.participants());
   }
 }

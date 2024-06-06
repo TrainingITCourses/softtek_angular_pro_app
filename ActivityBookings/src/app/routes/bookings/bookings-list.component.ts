@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, InputSignal, Signal, computed, input } from '@angular/core';
 import { Booking } from '@domain/booking.type';
 
+/**
+ * Presentation component for displaying a list of bookings.
+ * @description Displays the number of participants and the date of the booking.
+ */
 @Component({
   selector: 'lab-bookings-list',
   standalone: true,

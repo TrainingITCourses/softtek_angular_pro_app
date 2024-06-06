@@ -5,6 +5,11 @@ import { Activity, ActivityStatus, NULL_ACTIVITY } from '@domain/activity.type';
 import { Booking } from '@domain/booking.type';
 import { BookingService } from './booking.service';
 
+/**
+ * Store to manage the bookings in the app.
+ * @description NOT Provided in the root injector.
+ * @requires BookingService to manage the state
+ */
 @Injectable()
 export class BookingStore {
   // ! Interop Signal-Observable world

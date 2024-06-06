@@ -6,8 +6,8 @@ import { BehaviorSubject, switchMap } from 'rxjs';
 
 /**
  * Facade service for the Home page
- * - NOT Provided in the root injector.
- * - Uses the `ActivitiesRepository` to get the activities data.
+ * @description NOT Provided in the root injector.
+ * @requires ActivitiesRepository to get the activities data.
  */
 @Injectable()
 export class HomeService {

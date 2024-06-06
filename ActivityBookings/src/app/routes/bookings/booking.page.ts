@@ -19,13 +19,11 @@ import { PlacesComponent } from './places.component';
 
 /**
  * Booking page component routed to /bookings/:slug
- * Imports:
- * - `ActivityDetailsComponent` to display activity details
- * - `BookingsListComponent` to display bookings
- * - `PlacesComponent` to display booked and remaining places
- * - `NewBookingComponent` to create a new booking
- * Provides:
- * - `BookingStore` to manage state
+ * @requires BookingStore to manage state
+ * @requires ActivityDetailsComponent to display activity details
+ * @requires BookingsListComponent to display bookings
+ * @requires PlacesComponent to display booked and remaining places
+ * @requires NewBookingComponent to create a new booking
  */
 @Component({
   standalone: true,

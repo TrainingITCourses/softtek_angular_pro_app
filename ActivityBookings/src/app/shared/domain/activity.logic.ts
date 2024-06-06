@@ -2,7 +2,7 @@ import { Activity, ActivityStatus } from './activity.type';
 import { Booking } from './booking.type';
 
 /**
- * Calculate the next status of an activity based on the total number of participants
+ * Calculates the next status of an activity based on the total number of participants
  * @param activity The current activity
  * @param participants The total number of participants
  * @returns The next status of the activity
@@ -17,7 +17,7 @@ export function getNextActivityStatus(activity: Activity, participants: number):
 }
 
 /**
- * Calculate the total number of booked places from the bookings
+ * Calculates the total number of booked places from the bookings
  * @param bookings The bookings to calculate the total number of participants
  * @returns The total number of participants
  */

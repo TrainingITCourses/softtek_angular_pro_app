@@ -1,23 +1,22 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  InputSignal,
-  Signal,
-  computed,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, InputSignal, Signal, computed, input } from '@angular/core';
 import { ActivityStatus } from '@domain/activity.type';
 
+/**
+ * Component to display the status of an activity.
+ */
 @Component({
   selector: 'lab-activity-status',
   standalone: true,
-  imports: [],
-  template: ` <span>{{ icon() }} {{ value().toUpperCase() }} </span> `,
-  styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  template: ` <span>{{ icon() }} {{ value().toUpperCase() }} </span> `,
 })
 export class ActivityStatusComponent {
+  // * Input signal division
+
+  /** The activity status value */
   value: InputSignal<ActivityStatus> = input.required<ActivityStatus>();
+
+  // * Computed signal division
 
   icon: Signal<string> = computed(() => {
     const status: ActivityStatus = this.value();

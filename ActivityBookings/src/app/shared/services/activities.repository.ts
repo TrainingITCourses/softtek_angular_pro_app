@@ -8,6 +8,7 @@ import { Observable, map, of } from 'rxjs';
  * Repository service for the activities.
  * - Provides the activities data from the API.
  * - Provided in the root injector.
+ * @requires HttpClient to make requests to the API
  */
 @Injectable({
   providedIn: 'root',

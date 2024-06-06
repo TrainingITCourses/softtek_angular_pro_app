@@ -4,6 +4,7 @@ import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 /**
  * Service to access the window object when running on the browser
  * @description Avoids errors when running the app on the server
+ * @requires PLATFORM_ID to determine if the app is running on the server or the browser
  */
 @Injectable({
   providedIn: 'root',

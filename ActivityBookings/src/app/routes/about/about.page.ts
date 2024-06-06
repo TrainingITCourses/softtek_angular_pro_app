@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+/**
+ * Page component to display information about the app.
+ */
 @Component({
   selector: 'app-about',
   standalone: true,

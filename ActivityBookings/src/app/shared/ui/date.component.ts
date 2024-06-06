@@ -12,10 +12,10 @@ import { environment } from '@env/environment';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [DatePipe],
-  template: ` <span>📅 on {{ value() | date : dateFormat }}</span> `,
+  template: ` <span>📅 on {{ value() | date: dateFormat }}</span> `,
 })
 export class DateComponent {
-  // * Input division
+  // * Input signal division
 
   /** Date to be displayed */
   value: InputSignal<Date> = input.required<Date>();
