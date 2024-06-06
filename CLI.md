@@ -124,3 +124,54 @@ Angular builders test
 ```bash
 npm i @angular-builders/jest
 ```
+
+# LIBS
+
+## Sesión 5
+
+```bash
+# libraries laboratory
+mkdir lb-lab
+cd lb-lab
+```
+
+## Generate WorkSpace for UI library
+
+```bash
+ng new ws-ui --no-create-application
+ng g lib lab-ui --prefix=lab-ui --style=css
+ng g app lab-ui-host --minimal
+ng config projects.lab-ui.schematics.@schematics/angular:component.changeDetection \"OnPush\"
+ng config projects.lab-ui.schematics.@schematics/angular:component.flat true
+ng config projects.lab-ui.schematics.@schematics/angular:component.inlineTemplate true
+ng config projects.lab-ui.schematics.@schematics/angular:component.inlineStyle true
+ng config projects.lab-ui.schematics.@schematics/angular:component.style \"none\"
+```
+
+### Development and testing the library
+
+```bash
+# "watch": "ng build lab-ui --watch --configuration development",
+npm run watch
+# "start": "ng serve lab-ui-host",
+npm start
+# "test": "ng test lab-ui"
+npm test
+```
+
+### Build and publish (link) and consume (link) the library
+
+```bash
+# "publish": "npm run build && cd dist/lab-ui && npm link",
+npm run publish
+# list global npm links
+npm ls -g --depth=0
+# target the global npm link
+cd ..
+ng new lab-target --minimal
+cd lab-target
+npm link lab-ui
+# build.options: preserveSymlinks: true
+ng config projects.lab-target.architect.build.options.preserveSymlinks true
+npm start
+```
